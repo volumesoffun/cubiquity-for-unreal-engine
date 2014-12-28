@@ -1,0 +1,21 @@
+{
+	"PluginFileVersion" : 1,
+	"FriendlyName" : "Cubiquity",
+	"Version" : 1,
+	"VersionName" : "1.0",
+	"CreatedBy" : "Volumes of Fun",
+	"CreatedByURL" : "http://www.volumeoffun.com",
+	"MinEngineVersion" : 1579795,
+	"Description" : "Cubiquity for Unreal Engine 4",
+	"CategoryPath" : "Rendering.Components",
+	"CanContainContent" : "true",
+	"Modules" :
+	[
+		{
+			"Name" : "Cubiquity",
+			"Type" : "Runtime",
+			"BlacklistPlatforms" : [ "HTML5" ],
+			"LoadingPhase" : "PostConfigInit"
+		}
+	]
+}
