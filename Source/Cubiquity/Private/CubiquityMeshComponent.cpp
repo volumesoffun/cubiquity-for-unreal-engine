@@ -6,8 +6,6 @@
 #include "CubiquityTerrainVolume.h"
 #include "CubiquityColoredCubesVolume.h"
 
-DEFINE_LOG_CATEGORY(CubiquityLog);
-
 UCubiquityMeshComponent::UCubiquityMeshComponent(const FObjectInitializer& PCIP)
 	: Super(PCIP)
 {

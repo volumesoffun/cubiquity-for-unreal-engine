@@ -76,5 +76,3 @@ private:
 	friend class FGeneratedMeshSceneProxy;
 	friend class FColoredCubesSceneProxy;
 };
-
-DECLARE_LOG_CATEGORY_EXTERN(CubiquityLog, Log, All);
