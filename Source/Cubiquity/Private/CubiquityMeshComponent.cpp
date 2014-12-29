@@ -11,7 +11,6 @@ UCubiquityMeshComponent::UCubiquityMeshComponent(const FObjectInitializer& PCIP)
 {
 	//UE_LOG(CubiquityLog, Log, TEXT("Creating UCubiquityMeshComponent"));
 	PrimaryComponentTick.bCanEverTick = false;
-	bTickInEditor = true;
 	SetMobility(EComponentMobility::Stationary);
 	SetCollisionObjectType(ECC_WorldStatic);
 }
@@ -337,7 +336,7 @@ void UCubiquityMeshComponent::UpdateCollision()
 		ModelBodySetup->InvalidatePhysicsData();
 		ModelBodySetup->CreatePhysicsMeshes();
 
-		UE_LOG(CubiquityLog, Log, TEXT("Physics updated"));
+		//UE_LOG(CubiquityLog, Log, TEXT("Physics updated"));
 	}
 }
 

@@ -34,8 +34,8 @@ void ACubiquityTerrainVolume::PostActorCreated()
 
 	volume = std::make_unique<Cubiquity::TerrainVolume>(TCHAR_TO_ANSI(*volumeFileName), Cubiquity::WritePermissions::ReadOnly, 32);
 	const auto eyePosition = eyePositionInVolumeSpace();
-	while (!volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold)) { /*Keep calling update until it returns true*/ }
-	//volume->update({0.0, 0.0, 0.0}, 0.0);
+	//while (!volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold)) { /*Keep calling update until it returns true*/ }
+	volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold);
 
 	loadVolume();
 	
@@ -52,8 +52,8 @@ void ACubiquityTerrainVolume::PostLoad()
 	
 	volume = std::make_unique<Cubiquity::TerrainVolume>(TCHAR_TO_ANSI(*volumeFileName), Cubiquity::WritePermissions::ReadOnly, 32);
 	const auto eyePosition = eyePositionInVolumeSpace();
-	while (!volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold)) { /*Keep calling update until it returns true*/ }
-	//volume->update({ 0.0, 0.0, 0.0 }, 0.0);
+	//while (!volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold)) { /*Keep calling update until it returns true*/ }
+	volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold);
 
 	Super::PostLoad();
 }

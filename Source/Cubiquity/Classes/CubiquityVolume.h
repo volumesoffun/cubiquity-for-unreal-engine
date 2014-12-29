@@ -13,6 +13,7 @@
 #include "CubiquityVolume.generated.h"
 
 class UCubiquityMeshComponent;
+class UCubiquityUpdateComponent;
 
 /**
 * A CubiquityVolume is the base class for the volume actors in Cubiquity.
@@ -39,7 +40,7 @@ class ACubiquityVolume : public AActor
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Cubiquity")
 	UMaterialInterface* Material; //The material applied to the terrain
 
-	USceneComponent* root; //Used to attach the mesh component hierachy to
+	UCubiquityUpdateComponent* root; //Used to attach the mesh component hierachy to
 
 	UPROPERTY(EditAnywhere, Category = "Cubiquity")
 	FString volumeFileName;

@@ -23,8 +23,8 @@ void ACubiquityColoredCubesVolume::PostActorCreated()
 	
 	volume = std::make_unique<Cubiquity::ColoredCubesVolume>(TCHAR_TO_ANSI(*volumeFileName), Cubiquity::WritePermissions::ReadOnly, 32);
 	const auto eyePosition = eyePositionInVolumeSpace();
-	while (!volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold)) { /*Keep calling update until it returns true*/ }
-	//volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold);
+	//while (!volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold)) { /*Keep calling update until it returns true*/ }
+	volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold);
 
 	loadVolume();
 	
@@ -41,8 +41,8 @@ void ACubiquityColoredCubesVolume::PostLoad()
 	
 	volume = std::make_unique<Cubiquity::ColoredCubesVolume>(TCHAR_TO_ANSI(*volumeFileName), Cubiquity::WritePermissions::ReadOnly, 32);
 	const auto eyePosition = eyePositionInVolumeSpace();
-	while (!volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold)) { /*Keep calling update until it returns true*/ }
-	//volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold);
+	//while (!volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold)) { /*Keep calling update until it returns true*/ }
+	volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold);
 
 	Super::PostLoad();
 }
@@ -75,7 +75,6 @@ void ACubiquityColoredCubesVolume::Tick(float DeltaSeconds)
 	const auto eyePosition = eyePositionInVolumeSpace();
 	volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold);
 
-	UE_LOG(CubiquityLog, Log, TEXT("%x"), octreeRootNodeActor);
 	if (octreeRootNodeActor)
 	{
 		octreeRootNodeActor->processOctreeNode(volume->rootOctreeNode());
