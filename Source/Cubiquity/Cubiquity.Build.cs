@@ -12,7 +12,7 @@ public class Cubiquity : ModuleRules
 
     private string ThirdPartyPath
     {
-        get { return Path.GetFullPath(Path.Combine(ModulePath, "G:\\Cubiquity")); }
+        get { return Path.GetFullPath(Path.Combine(ModulePath, "G:/Cubiquity")); }
     }
 
     private string ThirdPartyLibraryPath
