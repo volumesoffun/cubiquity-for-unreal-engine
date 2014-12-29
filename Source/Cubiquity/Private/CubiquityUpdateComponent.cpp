@@ -3,12 +3,10 @@
 #include "CubiquityPluginPrivatePCH.h"
 
 #include "CubiquityUpdateComponent.h"
-#include "CubiquityTerrainVolume.h"
 
 UCubiquityUpdateComponent::UCubiquityUpdateComponent(const FObjectInitializer& PCIP)
 	: Super(PCIP)
 {
-	//UE_LOG(CubiquityLog, Log, TEXT("Creating UCubiquityMeshComponent"));
 	PrimaryComponentTick.bCanEverTick = true;
 	bTickInEditor = true;
 	bAutoActivate = true;

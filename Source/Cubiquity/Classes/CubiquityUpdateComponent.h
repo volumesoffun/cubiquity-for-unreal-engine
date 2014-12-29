@@ -6,6 +6,7 @@
 
 /** 
  * The whole purpose of this class is to allow the volume actor to process updates while in the editor
+ * Its TickComponent function simply calls its owners Tick function
  */
 UCLASS()
 class UCubiquityUpdateComponent : public USceneComponent
