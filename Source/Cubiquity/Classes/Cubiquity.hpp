@@ -1,3 +1,5 @@
+// Copyright 2014 Volumes of Fun. All Rights Reserved.
+
 #ifndef CUBIQUITY_HPP_
 #define CUBIQUITY_HPP_
 

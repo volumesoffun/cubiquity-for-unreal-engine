@@ -1,3 +1,5 @@
+// Copyright 2014 Volumes of Fun. All Rights Reserved.
+
 #pragma once
 
 #include "Cubiquity.hpp"
