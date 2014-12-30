@@ -66,13 +66,13 @@ void ACubiquityVolume::Destroyed()
 {
 	UE_LOG(CubiquityLog, Log, TEXT("ACubiquityVolume::Destroyed"));
 
-	TArray<AActor*> children = Children; //Make a copy to avoid overruns
+	/*TArray<AActor*> children = Children; //Make a copy to avoid overruns
 	//UE_LOG(CubiquityLog, Log, TEXT(" Children %d"), children.Num());
 	for (AActor* childActor : children) //Should only be 1 child of this Actor
 	{
 		//UE_LOG(CubiquityLog, Log, TEXT("  Destroying childActor"));
 		GetWorld()->DestroyActor(childActor);
-	}
+	}*/
 
 	Super::Destroyed();
 }

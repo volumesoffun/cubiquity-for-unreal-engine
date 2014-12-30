@@ -13,12 +13,6 @@
 
 #include "CubiquityMeshComponent.generated.h"
 
-/*enum class VolumeType : int
-{
-	ColoredCubes,
-	Terrain
-};*/
-
 /** Component that allows you to specify custom triangle mesh geometry */
 UCLASS(editinlinenew, meta = (BlueprintSpawnableComponent), ClassGroup = Rendering)
 class UCubiquityMeshComponent : public UMeshComponent, public IInterface_CollisionDataProvider
@@ -27,7 +21,6 @@ class UCubiquityMeshComponent : public UMeshComponent, public IInterface_Collisi
 
 public:
 	/** Set the geometry to use on this triangle mesh */
-	//UFUNCTION(BlueprintCallable, Category = "Components|GeneratedMesh")
 	bool SetGeneratedMeshTriangles(const Cubiquity::OctreeNode& octreeNode);
 
 	bool SetGeneratedMeshTrianglesColoredCubes(const Cubiquity::OctreeNode& octreeNode);
