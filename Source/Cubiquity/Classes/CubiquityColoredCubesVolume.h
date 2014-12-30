@@ -24,16 +24,16 @@ class ACubiquityColoredCubesVolume : public ACubiquityVolume
 	void Tick(float DeltaSeconds) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
-	FVector pickFirstSolidVoxel(FVector start, FVector direction); //Currently in world space
+	FVector pickFirstSolidVoxel(FVector localStartPosition, FVector localDirection);
 
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
-	FVector pickLastEmptyVoxel(FVector start, FVector direction); //Currently in world space
+	FVector pickLastEmptyVoxel(FVector localStartPosition, FVector localDirection);
 
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
-	void setVoxel(FIntVector position, FColor newColor); //In volume space
+	void setVoxel(FIntVector localPosition, FColor newColor);
 
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
-	FColor getVoxel(FIntVector position); //In volume space
+	FColor getVoxel(FIntVector localPosition);
 
 private:
 	std::unique_ptr<Cubiquity::ColoredCubesVolume> m_volume = nullptr;

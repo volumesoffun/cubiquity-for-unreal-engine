@@ -26,16 +26,16 @@ class ACubiquityTerrainVolume : public ACubiquityVolume
 	void Tick(float DeltaSeconds) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
-	void sculptTerrain(const FVector& worldPosition, float innerRadius = 0.5, float outerRadius = 2.0, float opacity = 0.8); //TODO in world space
+	void sculptTerrain(FVector localPosition, float innerRadius = 0.5, float outerRadius = 2.0, float opacity = 0.8);
 
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
-	FVector pickSurface(const FVector& start, const FVector& direction); //TODO returns in world space
+	FVector pickSurface(FVector localStartPosition, FVector localDirection);
 
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
-	void setVoxel(const FIntVector& position, const UCubiquityMaterialSet* materialSet); //In volume space
+	void setVoxel(FIntVector localPosition, const UCubiquityMaterialSet* materialSet);
 
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
-	UCubiquityMaterialSet* getVoxel(const FIntVector& position); //In volume space
+	UCubiquityMaterialSet* getVoxel(FIntVector localPosition);
 
 private:
 	std::unique_ptr<Cubiquity::TerrainVolume> m_volume = nullptr;

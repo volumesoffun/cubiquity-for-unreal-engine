@@ -38,25 +38,15 @@ void ACubiquityTerrainVolume::loadVolume()
 	m_volume = loadVolumeImpl<Cubiquity::TerrainVolume>();
 }
 
-void ACubiquityTerrainVolume::sculptTerrain(const FVector& worldPosition, float innerRadius, float outerRadius, float opacity)
+void ACubiquityTerrainVolume::sculptTerrain(FVector localPosition, float innerRadius, float outerRadius, float opacity)
 {
-	//Do we really need to check for this being zero?
-	if (worldPosition.IsZero())
-	{
-		return;
-	}
-
-	auto voxelPosition = worldToVolume(this, worldPosition);
-
-	m_volume->sculpt({ voxelPosition.X, voxelPosition.Y, voxelPosition.Z }, innerRadius, outerRadius, opacity);
+	m_volume->sculpt({ localPosition.X, localPosition.Y, localPosition.Z }, innerRadius, outerRadius, opacity);
 }
 
-FVector ACubiquityTerrainVolume::pickSurface(const FVector& start, const FVector& direction)
+FVector ACubiquityTerrainVolume::pickSurface(FVector localStartPosition, FVector localDirection)
 {
 	bool success;
-	const FVector localStart = worldToVolume(this, start);
-	const FVector localDirection = worldToVolume(this, direction);
-	auto hitLocation = m_volume->pickSurface({ localStart.X, localStart.Y, localStart.Z }, { localDirection.X, localDirection.Y, localDirection.Z }, &success);
+	auto hitLocation = m_volume->pickSurface({ localStartPosition.X, localStartPosition.Y, localStartPosition.Z }, { localDirection.X, localDirection.Y, localDirection.Z }, &success);
 
 	if (!success)
 	{
@@ -64,15 +54,15 @@ FVector ACubiquityTerrainVolume::pickSurface(const FVector& start, const FVector
 		return FVector::ZeroVector;
 	}
 
-	return volumeToWorld(this, { hitLocation.x, hitLocation.y, hitLocation.z });
+	return { hitLocation.x, hitLocation.y, hitLocation.z };
 }
 
-void ACubiquityTerrainVolume::setVoxel(const FIntVector& position, const UCubiquityMaterialSet* materialSet)
+void ACubiquityTerrainVolume::setVoxel(FIntVector position, const UCubiquityMaterialSet* materialSet)
 {
 	m_volume->setVoxel({ position.X, position.Y, position.Z }, *materialSet);
 }
 
-UCubiquityMaterialSet* ACubiquityTerrainVolume::getVoxel(const FIntVector& position)
+UCubiquityMaterialSet* ACubiquityTerrainVolume::getVoxel(FIntVector position)
 {
 	const auto& voxel = m_volume->getVoxel({ position.X, position.Y, position.Z });
 	return new UCubiquityMaterialSet(voxel);

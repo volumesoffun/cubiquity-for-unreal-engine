@@ -38,12 +38,10 @@ void ACubiquityColoredCubesVolume::loadVolume()
 	m_volume = loadVolumeImpl<Cubiquity::ColoredCubesVolume>();
 }
 
-FVector ACubiquityColoredCubesVolume::pickFirstSolidVoxel(FVector start, FVector direction)
+FVector ACubiquityColoredCubesVolume::pickFirstSolidVoxel(FVector localStartPosition, FVector localDirection)
 {
 	bool success;
-	const FVector localStart = worldToVolume(this, start);
-	const FVector localDirection = worldToVolume(this, direction);
-	auto hitLocation = m_volume->pickFirstSolidVoxel({ localStart.X, localStart.Y, localStart.Z }, { localDirection.X, localDirection.Y, localDirection.Z }, &success);
+	auto hitLocation = m_volume->pickFirstSolidVoxel({ localStartPosition.X, localStartPosition.Y, localStartPosition.Z }, { localDirection.X, localDirection.Y, localDirection.Z }, &success);
 
 	if (!success)
 	{
@@ -51,15 +49,13 @@ FVector ACubiquityColoredCubesVolume::pickFirstSolidVoxel(FVector start, FVector
 		return FVector::ZeroVector;
 	}
 
-	return volumeToWorld(this, FVector(hitLocation.x, hitLocation.y, hitLocation.z));
+	return FVector(hitLocation.x, hitLocation.y, hitLocation.z);
 }
 
-FVector ACubiquityColoredCubesVolume::pickLastEmptyVoxel(FVector start, FVector direction)
+FVector ACubiquityColoredCubesVolume::pickLastEmptyVoxel(FVector localStartPosition, FVector localDirection)
 {
 	bool success;
-	const FVector localStart = worldToVolume(this, start);
-	const FVector localDirection = worldToVolume(this, direction);
-	auto hitLocation = m_volume->pickLastEmptyVoxel({ localStart.X, localStart.Y, localStart.Z }, { localDirection.X, localDirection.Y, localDirection.Z }, &success);
+	auto hitLocation = m_volume->pickLastEmptyVoxel({ localStartPosition.X, localStartPosition.Y, localStartPosition.Z }, { localDirection.X, localDirection.Y, localDirection.Z }, &success);
 
 	if (!success)
 	{
@@ -67,7 +63,7 @@ FVector ACubiquityColoredCubesVolume::pickLastEmptyVoxel(FVector start, FVector 
 		return FVector::ZeroVector;
 	}
 
-	return volumeToWorld(this, FVector(hitLocation.x, hitLocation.y, hitLocation.z));
+	return FVector(hitLocation.x, hitLocation.y, hitLocation.z);
 }
 
 void ACubiquityColoredCubesVolume::setVoxel(FIntVector position, FColor newColor)
