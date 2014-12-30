@@ -3,8 +3,9 @@
 #include "CubiquityPluginPrivatePCH.h"
 
 #include "CubiquityVolume.h"
+
 #include "CubiquityOctreeNode.h"
-#include "CubiquityTerrainMeshComponent.h"
+#include "CubiquityMeshComponent.h"
 #include "CubiquityUpdateComponent.h"
 
 ACubiquityVolume::ACubiquityVolume(const FObjectInitializer& PCIP)

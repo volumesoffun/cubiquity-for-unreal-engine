@@ -3,8 +3,10 @@
 #include "CubiquityPluginPrivatePCH.h"
 
 #include "CubiquityTerrainVolume.h"
+
 #include "CubiquityOctreeNode.h"
 #include "CubiquityMeshComponent.h"
+#include "CubiquityMaterialSet.h"
 
 ACubiquityTerrainVolume::ACubiquityTerrainVolume(const FObjectInitializer& PCIP)
 	: Super(PCIP)

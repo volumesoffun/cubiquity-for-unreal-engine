@@ -4,16 +4,13 @@
 
 #include "Cubiquity.hpp"
 
-#include "CubiquityOctreeNode.h"
-
-#include "GameFramework/Actor.h"
-
 #include <memory>
 
 #include "CubiquityVolume.generated.h"
 
 class UCubiquityMeshComponent;
 class UCubiquityUpdateComponent;
+class ACubiquityOctreeNode;
 
 /**
 * A CubiquityVolume is the base class for the volume actors in Cubiquity.

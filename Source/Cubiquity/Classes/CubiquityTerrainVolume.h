@@ -4,11 +4,10 @@
 
 #include "CubiquityVolume.h"
 
-#include "CubiquityMaterialSet.h"
-
 #include "CubiquityTerrainVolume.generated.h"
 
 class UCubiquityMeshComponent;
+class UCubiquityMaterialSet;
 
 /**
 *

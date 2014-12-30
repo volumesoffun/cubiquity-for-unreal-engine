@@ -6,11 +6,10 @@
 
 #include "Cubiquity.hpp"
 
-#include "GameFramework/Actor.h"
-#include "CubiquityTerrainMeshComponent.h"
 #include "CubiquityOctreeNode.generated.h"
 
 class ACubiquityVolume;
+class UCubiquityMeshComponent;
 
 /**
  * This is marked transient so that Cubiquity can recreate on level loading

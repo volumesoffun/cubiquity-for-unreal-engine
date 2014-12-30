@@ -4,9 +4,7 @@
 
 #include "CubiquityOctreeNode.h"
 #include "CubiquityVolume.h"
-#include "CubiquityColoredCubesVolume.h"
-#include "CubiquityTerrainVolume.h"
-
+#include "CubiquityMeshComponent.h"
 
 ACubiquityOctreeNode::ACubiquityOctreeNode(const FObjectInitializer& PCIP)
 	: Super(PCIP)
