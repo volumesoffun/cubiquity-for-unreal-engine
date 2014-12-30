@@ -60,6 +60,12 @@ class ACubiquityVolume : public AActor
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
 	void discardChanges();
 
+	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
+	static FVector worldToVolume(const ACubiquityVolume* const volume, const FVector& worldPosition);
+
+	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
+	static FVector volumeToWorld(const ACubiquityVolume* const volume, const FVector& localPosition);
+
 protected:
 	//This provides access to the subclass' volume pointer in a subtype-independant way
 	//We can access all the general Volume stuff by this
@@ -91,8 +97,5 @@ protected:
 			return std::make_unique<VolumeType>(Cubiquity::Vector<int32_t>{ 0, 0, 0 }, Cubiquity::Vector<int32_t>{ 128, 128, 32 }, TCHAR_TO_ANSI(*volumeFileName), 32);
 		}
 	}
-
-	FVector worldToVolume(FVector worldPosition) const;
-	FVector volumeToWorld(FVector localPosition) const;
 
 };

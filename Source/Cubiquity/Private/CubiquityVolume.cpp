@@ -158,16 +158,16 @@ void ACubiquityVolume::discardChanges()
 	}
 }
 
-FVector ACubiquityVolume::worldToVolume(FVector worldPosition) const
+FVector ACubiquityVolume::worldToVolume(const ACubiquityVolume* const volume, const FVector& worldPosition)
 {
-	return root->GetComponentTransform().InverseTransformPosition(worldPosition);
+	return volume->root->GetComponentTransform().InverseTransformPosition(worldPosition);
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("World: %f %f %f,  Mesh: %f %f %f,  Voxel: %d %d %d"), worldPosition.X, worldPosition.Y, worldPosition.Z, meshSpacePosition.X, meshSpacePosition.Y, meshSpacePosition.Z, int32_t(meshSpacePosition.X), int32_t(meshSpacePosition.Y), int32_t(meshSpacePosition.Z)));
 	//return{ int32_t(meshSpacePosition.X), int32_t(meshSpacePosition.Y), int32_t(meshSpacePosition.Z) };
 }
 
-FVector ACubiquityVolume::volumeToWorld(FVector localPosition) const
+FVector ACubiquityVolume::volumeToWorld(const ACubiquityVolume* const volume, const FVector& localPosition)
 {
-	return root->GetComponentTransform().TransformPosition(localPosition);
+	return volume->root->GetComponentTransform().TransformPosition(localPosition);
 }
 
 FVector ACubiquityVolume::eyePositionInVolumeSpace() const
@@ -185,7 +185,7 @@ FVector ACubiquityVolume::eyePositionInVolumeSpace() const
 			playerController->GetPlayerViewPoint(location, rotation);
 			//UE_LOG(CubiquityLog, Log, TEXT("Location: %f %f %f"), location.X, location.Y, location.Z);
 			//UE_LOG(CubiquityLog, Log, TEXT("Location: %f %f %f"), worldToVolume(location).X, worldToVolume(location).Y, worldToVolume(location).Z);
-			return worldToVolume(location);
+			return worldToVolume(this, location);
 		}
 	}
 

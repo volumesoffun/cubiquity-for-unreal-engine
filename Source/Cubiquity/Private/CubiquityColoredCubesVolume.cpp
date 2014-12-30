@@ -41,8 +41,8 @@ void ACubiquityColoredCubesVolume::loadVolume()
 FVector ACubiquityColoredCubesVolume::pickFirstSolidVoxel(FVector start, FVector direction)
 {
 	bool success;
-	const FVector localStart = worldToVolume(start);
-	const FVector localDirection = worldToVolume(direction);
+	const FVector localStart = worldToVolume(this, start);
+	const FVector localDirection = worldToVolume(this, direction);
 	auto hitLocation = m_volume->pickFirstSolidVoxel({ localStart.X, localStart.Y, localStart.Z }, { localDirection.X, localDirection.Y, localDirection.Z }, &success);
 
 	if (!success)
@@ -51,14 +51,14 @@ FVector ACubiquityColoredCubesVolume::pickFirstSolidVoxel(FVector start, FVector
 		return FVector::ZeroVector;
 	}
 
-	return volumeToWorld(FVector(hitLocation.x, hitLocation.y, hitLocation.z));
+	return volumeToWorld(this, FVector(hitLocation.x, hitLocation.y, hitLocation.z));
 }
 
 FVector ACubiquityColoredCubesVolume::pickLastEmptyVoxel(FVector start, FVector direction)
 {
 	bool success;
-	const FVector localStart = worldToVolume(start);
-	const FVector localDirection = worldToVolume(direction);
+	const FVector localStart = worldToVolume(this, start);
+	const FVector localDirection = worldToVolume(this, direction);
 	auto hitLocation = m_volume->pickLastEmptyVoxel({ localStart.X, localStart.Y, localStart.Z }, { localDirection.X, localDirection.Y, localDirection.Z }, &success);
 
 	if (!success)
@@ -67,7 +67,7 @@ FVector ACubiquityColoredCubesVolume::pickLastEmptyVoxel(FVector start, FVector 
 		return FVector::ZeroVector;
 	}
 
-	return volumeToWorld(FVector(hitLocation.x, hitLocation.y, hitLocation.z));
+	return volumeToWorld(this, FVector(hitLocation.x, hitLocation.y, hitLocation.z));
 }
 
 void ACubiquityColoredCubesVolume::setVoxel(FIntVector position, FColor newColor)
