@@ -43,5 +43,5 @@ class ACubiquityTerrainVolume : public ACubiquityVolume
 private:
 	std::unique_ptr<Cubiquity::TerrainVolume> volume = nullptr;
 
-	virtual void loadVolume() override;
+	virtual void createOctree() override;
 };

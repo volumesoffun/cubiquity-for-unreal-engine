@@ -32,12 +32,13 @@ void ACubiquityTerrainVolume::PostActorCreated()
 {
 	UE_LOG(CubiquityLog, Log, TEXT("ACubiquityTerrainVolume::PostActorCreated"));
 
-	volume = std::make_unique<Cubiquity::TerrainVolume>(TCHAR_TO_ANSI(*volumeFileName), Cubiquity::WritePermissions::ReadOnly, 32);
+	volume = loadVolume<Cubiquity::TerrainVolume>();
+
 	const auto eyePosition = eyePositionInVolumeSpace();
 	//while (!volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold)) { /*Keep calling update until it returns true*/ }
 	volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold);
 
-	loadVolume();
+	createOctree();
 	
 	Super::PostActorCreated();
 }
@@ -49,8 +50,9 @@ void ACubiquityTerrainVolume::PostLoad()
 	//Actors in the tree will have been serialised anyway so should be loaded.
 
 	UE_LOG(CubiquityLog, Log, TEXT("ACubiquityTerrainVolume::PostLoad"));
-	
-	volume = std::make_unique<Cubiquity::TerrainVolume>(TCHAR_TO_ANSI(*volumeFileName), Cubiquity::WritePermissions::ReadOnly, 32);
+
+	volume = loadVolume<Cubiquity::TerrainVolume>();
+
 	const auto eyePosition = eyePositionInVolumeSpace();
 	//while (!volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold)) { /*Keep calling update until it returns true*/ }
 	volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold);
@@ -65,7 +67,7 @@ void ACubiquityTerrainVolume::Destroyed()
 	volume.reset(nullptr);
 }
 
-void ACubiquityTerrainVolume::loadVolume()
+void ACubiquityTerrainVolume::createOctree()
 {
 	UE_LOG(CubiquityLog, Log, TEXT("ACubiquityTerrainVolume::loadVolume"));
 

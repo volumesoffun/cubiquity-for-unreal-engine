@@ -41,6 +41,6 @@ class ACubiquityColoredCubesVolume : public ACubiquityVolume
 private:
 	std::unique_ptr<Cubiquity::ColoredCubesVolume> volume = nullptr;
 
-	virtual void loadVolume() override;
+	virtual void createOctree() override;
 
 };

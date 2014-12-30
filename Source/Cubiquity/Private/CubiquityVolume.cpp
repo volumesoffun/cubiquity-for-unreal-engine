@@ -33,7 +33,7 @@ void ACubiquityVolume::OnConstruction(const FTransform& transform)
 
 	if (RootComponent->GetNumChildrenComponents() == 0) //If we haven't created the octree yet
 	{
-		loadVolume();
+		createOctree();
 	}
 
 	Super::OnConstruction(transform);
@@ -52,7 +52,7 @@ void ACubiquityVolume::BeginPlay()
 {
 	UE_LOG(CubiquityLog, Log, TEXT("ACubiquityVolume::BeginPlay"));
 
-	loadVolume();
+	createOctree();
 
 	Super::BeginPlay();
 }
@@ -76,24 +76,6 @@ void ACubiquityVolume::Destroyed()
 
 	Super::Destroyed();
 }
-
-/*void ACubiquityVolume::loadVolume()
-{
-	UE_LOG(CubiquityLog, Log, TEXT("ACubiquityVolume::loadVolume"));
-
-	if (volume->hasRootOctreeNode())
-	{
-		auto rootOctreeNode = volume->rootOctreeNode();
-
-		//UE_LOG(CubiquityLog, Log, TEXT("Volume: %d   Root Node: %d"), volumeHandle, rootOctreeNodeHandle);
-
-		FActorSpawnParameters spawnParameters;
-		spawnParameters.Owner = this;
-		ACubiquityOctreeNode* actor = GetWorld()->SpawnActor<ACubiquityOctreeNode>(spawnParameters);
-		actor->Material = Material;
-		actor->initialiseOctreeNode(rootOctreeNodeHandle, 0, RootComponent);
-	}
-}*/
 
 void ACubiquityVolume::Tick(float DeltaSeconds)
 {

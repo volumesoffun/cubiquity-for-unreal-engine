@@ -66,7 +66,20 @@ protected:
 
 	ACubiquityOctreeNode* octreeRootNodeActor = nullptr;
 
-	virtual void loadVolume() PURE_VIRTUAL(ACubiquityVolume::loadVolume,);
+	virtual void createOctree() PURE_VIRTUAL(ACubiquityVolume::createOctree, );
+
+	template <typename VolumeType>
+	std::unique_ptr<VolumeType> loadVolume()
+	{
+		if (FPlatformFileManager::Get().GetPlatformFile().FileExists(*volumeFileName))
+		{
+			return std::make_unique<VolumeType>(TCHAR_TO_ANSI(*volumeFileName), Cubiquity::WritePermissions::ReadOnly, 32);
+		}
+		else
+		{
+			return std::make_unique<VolumeType>(Cubiquity::Vector<int32_t>{ 0, 0, 0 }, Cubiquity::Vector<int32_t>{ 128, 128, 32 }, TCHAR_TO_ANSI(*volumeFileName), 32);
+		}
+	}
 
 	FVector worldToVolume(FVector worldPosition) const;
 	FVector volumeToWorld(FVector localPosition) const;
