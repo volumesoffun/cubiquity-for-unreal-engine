@@ -19,7 +19,11 @@ class ACubiquityVolume;
 UCLASS(Transient)
 class ACubiquityOctreeNode : public AActor
 {
-	GENERATED_UCLASS_BODY()
+	GENERATED_BODY()
+
+public:
+
+	ACubiquityOctreeNode(const FObjectInitializer& PCIP);
 
 	virtual void Destroyed() override;
 

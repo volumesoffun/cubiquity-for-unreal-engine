@@ -17,9 +17,12 @@
 UCLASS(editinlinenew, meta = (BlueprintSpawnableComponent), ClassGroup = Rendering)
 class UCubiquityMeshComponent : public UMeshComponent, public IInterface_CollisionDataProvider
 {
-	GENERATED_UCLASS_BODY()
+	GENERATED_BODY()
 
 public:
+
+	UCubiquityMeshComponent(const FObjectInitializer& PCIP);
+
 	/** Set the geometry to use on this triangle mesh */
 	bool SetGeneratedMeshTriangles(const Cubiquity::OctreeNode& octreeNode);
 

@@ -16,8 +16,11 @@ class UCubiquityMeshComponent;
 UCLASS()
 class ACubiquityTerrainVolume : public ACubiquityVolume
 {
-	GENERATED_UCLASS_BODY()
+	GENERATED_BODY()
 
+public:
+
+	ACubiquityTerrainVolume(const FObjectInitializer& PCIP);
 	virtual void PostActorCreated() override;
 	virtual void PostLoad() override;
 

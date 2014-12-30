@@ -23,8 +23,11 @@ class UCubiquityUpdateComponent;
 UCLASS(Abstract)
 class ACubiquityVolume : public AActor
 {
-	GENERATED_UCLASS_BODY()
+	GENERATED_BODY()
 
+public:
+
+	ACubiquityVolume(const FObjectInitializer& PCIP);
 	virtual void PostActorCreated() override;
 	virtual void PostLoad() override;
 	virtual void OnConstruction(const FTransform & transform) override;

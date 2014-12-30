@@ -14,8 +14,11 @@ class UCubiquityMeshComponent;
 UCLASS()
 class ACubiquityColoredCubesVolume : public ACubiquityVolume
 {
-	GENERATED_UCLASS_BODY()
+	GENERATED_BODY()
 
+public:
+
+	ACubiquityColoredCubesVolume(const FObjectInitializer& PCIP);
 	virtual void PostActorCreated() override;
 	virtual void PostLoad() override;
 
