@@ -262,14 +262,14 @@ namespace Cubiquity
 			::validate(cuDiscardOverrideChunks(m_volumeHandle));
 		}
 
-		bool hasRootOctreeNode()
+		bool hasRootOctreeNode() const
 		{
 			bool result;
 			::validate(cuHasRootOctreeNode(m_volumeHandle, (uint32_t*)(&result)));
 			return result;
 		}
 
-		OctreeNode rootOctreeNode()
+		OctreeNode rootOctreeNode() const
 		{
 			uint32_t result;
 			::validate(cuGetRootOctreeNode(m_volumeHandle, &result));
