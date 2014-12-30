@@ -24,8 +24,6 @@ public:
 
 	virtual void Destroyed() override;
 
-	void Tick(float DeltaSeconds) override;
-
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
 	FVector pickFirstSolidVoxel(FVector localStartPosition, FVector localDirection);
 

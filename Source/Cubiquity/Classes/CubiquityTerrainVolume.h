@@ -25,8 +25,6 @@ public:
 
 	virtual void Destroyed() override;
 
-	void Tick(float DeltaSeconds) override;
-
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
 	void sculptTerrain(FVector localPosition, float innerRadius = 0.5, float outerRadius = 2.0, float opacity = 0.8);
 
