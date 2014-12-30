@@ -44,4 +44,6 @@ private:
 	std::unique_ptr<Cubiquity::TerrainVolume> volume = nullptr;
 
 	virtual void createOctree() override;
+
+	void loadVolume() override;
 };

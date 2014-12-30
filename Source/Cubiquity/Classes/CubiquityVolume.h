@@ -68,8 +68,10 @@ protected:
 
 	virtual void createOctree() PURE_VIRTUAL(ACubiquityVolume::createOctree, );
 
+	virtual void loadVolume() PURE_VIRTUAL(ACubiquityVolume::loadVolume, );
+
 	template <typename VolumeType>
-	std::unique_ptr<VolumeType> loadVolume()
+	std::unique_ptr<VolumeType> loadVolumeImpl()
 	{
 		if (FPlatformFileManager::Get().GetPlatformFile().FileExists(*volumeFileName))
 		{

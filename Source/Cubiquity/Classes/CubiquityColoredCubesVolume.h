@@ -43,4 +43,5 @@ private:
 
 	virtual void createOctree() override;
 
+	void loadVolume() override;
 };

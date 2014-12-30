@@ -21,7 +21,7 @@ void ACubiquityColoredCubesVolume::PostActorCreated()
 {
 	UE_LOG(CubiquityLog, Log, TEXT("ACubiquityColoredCubesVolume::PostActorCreated"));
 
-	volume = loadVolume<Cubiquity::ColoredCubesVolume>();
+	loadVolume();
 
 	const auto eyePosition = eyePositionInVolumeSpace();
 	//while (!volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold)) { /*Keep calling update until it returns true*/ }
@@ -40,7 +40,7 @@ void ACubiquityColoredCubesVolume::PostLoad()
 
 	UE_LOG(CubiquityLog, Log, TEXT("ACubiquityColoredCubesVolume::PostLoad"));
 	
-	volume = loadVolume<Cubiquity::ColoredCubesVolume>();
+	loadVolume();
 
 	const auto eyePosition = eyePositionInVolumeSpace();
 	//while (!volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold)) { /*Keep calling update until it returns true*/ }
@@ -54,6 +54,11 @@ void ACubiquityColoredCubesVolume::Destroyed()
 	Super::Destroyed();
 
 	volume.reset(nullptr);
+}
+
+void ACubiquityColoredCubesVolume::loadVolume()
+{
+	volume = loadVolumeImpl<Cubiquity::ColoredCubesVolume>();
 }
 
 void ACubiquityColoredCubesVolume::createOctree()

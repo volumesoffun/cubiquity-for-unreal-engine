@@ -32,7 +32,7 @@ void ACubiquityTerrainVolume::PostActorCreated()
 {
 	UE_LOG(CubiquityLog, Log, TEXT("ACubiquityTerrainVolume::PostActorCreated"));
 
-	volume = loadVolume<Cubiquity::TerrainVolume>();
+	loadVolume();
 
 	const auto eyePosition = eyePositionInVolumeSpace();
 	//while (!volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold)) { /*Keep calling update until it returns true*/ }
@@ -51,7 +51,7 @@ void ACubiquityTerrainVolume::PostLoad()
 
 	UE_LOG(CubiquityLog, Log, TEXT("ACubiquityTerrainVolume::PostLoad"));
 
-	volume = loadVolume<Cubiquity::TerrainVolume>();
+	loadVolume();
 
 	const auto eyePosition = eyePositionInVolumeSpace();
 	//while (!volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold)) { /*Keep calling update until it returns true*/ }
@@ -81,6 +81,11 @@ void ACubiquityTerrainVolume::createOctree()
 		octreeRootNodeActor->initialiseOctreeNode(rootOctreeNode, RootComponent, Material);
 		octreeRootNodeActor->processOctreeNode(rootOctreeNode);
 	}
+}
+
+void ACubiquityTerrainVolume::loadVolume()
+{
+	volume = loadVolumeImpl<Cubiquity::TerrainVolume>();
 }
 
 void ACubiquityTerrainVolume::Tick(float DeltaSeconds)
