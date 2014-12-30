@@ -35,13 +35,9 @@ class ACubiquityColoredCubesVolume : public ACubiquityVolume
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
 	FColor getVoxel(FIntVector position); //In volume space
 
-	void commitChanges() const override { if (volume){ volume->acceptOverrideChunks(); } }
-	void discardChanges() const override { if (volume){ volume->discardOverrideChunks(); } }
-
 private:
-	std::unique_ptr<Cubiquity::ColoredCubesVolume> volume = nullptr;
-
-	virtual void createOctree() override;
+	std::unique_ptr<Cubiquity::ColoredCubesVolume> m_volume = nullptr;
+	Cubiquity::Volume* volume() override { return m_volume.get(); }
 
 	void loadVolume() override;
 };

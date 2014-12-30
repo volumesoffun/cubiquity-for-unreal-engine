@@ -37,13 +37,9 @@ class ACubiquityTerrainVolume : public ACubiquityVolume
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
 	UCubiquityMaterialSet* getVoxel(const FIntVector& position); //In volume space
 
-	void commitChanges() const override { if (volume){ volume->acceptOverrideChunks(); } }
-	void discardChanges() const override { if (volume){ volume->discardOverrideChunks(); } }
-
 private:
-	std::unique_ptr<Cubiquity::TerrainVolume> volume = nullptr;
-
-	virtual void createOctree() override;
+	std::unique_ptr<Cubiquity::TerrainVolume> m_volume = nullptr;
+	Cubiquity::Volume* volume() override { return m_volume.get(); }
 
 	void loadVolume() override;
 };

@@ -11,19 +11,40 @@ ACubiquityVolume::ACubiquityVolume(const FObjectInitializer& PCIP)
 	: Super(PCIP)
 {
 	UE_LOG(CubiquityLog, Log, TEXT("Creating ACubiquityVolume"));
-	root = PCIP.CreateDefaultSubobject<UCubiquityUpdateComponent>(this, TEXT("Root"));
+	root = PCIP.CreateDefaultSubobject<UCubiquityUpdateComponent>(this, TEXT("Updater node"));
 	RootComponent = root;
+	//AddOwnedComponent(root);
 
 	PrimaryActorTick.bCanEverTick = true;
+	//PrimaryActorTick.bStartWithTickEnabled = true;
+	//PrimaryActorTick.TickGroup = TG_PrePhysics;
 }
 
 void ACubiquityVolume::PostActorCreated()
 {
+	loadVolume();
+
+	const auto eyePosition = eyePositionInVolumeSpace();
+	while (!volume()->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, 0.0)) { /*Keep calling update until it returns true*/ }
+	//volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold);
+
+	createOctree();
+
 	Super::PostActorCreated();
 }
 
 void ACubiquityVolume::PostLoad()
 {
+	//In here, we are loading an existing volume. We should initialise all the Cubiquity stuff by loading the filename from the UProperty
+	//It seems too early to spawn actors as the World doesn't exist yet.
+	//Actors in the tree will have been serialised anyway so should be loaded.
+
+	loadVolume();
+
+	const auto eyePosition = eyePositionInVolumeSpace();
+	while (!volume()->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, 0.0)) { /*Keep calling update until it returns true*/ }
+	//volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold);
+
 	Super::PostLoad();
 }
 
@@ -79,9 +100,31 @@ void ACubiquityVolume::Destroyed()
 
 void ACubiquityVolume::Tick(float DeltaSeconds)
 {
-	//UE_LOG(CubiquityLog, Log, TEXT("ACubiquityVolume::Tick"));
+	const auto eyePosition = eyePositionInVolumeSpace();
+	volume()->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold);
+
+	if (octreeRootNodeActor)
+	{
+		octreeRootNodeActor->processOctreeNode(volume()->rootOctreeNode());
+	}
 
 	Super::Tick(DeltaSeconds);
+}
+
+void ACubiquityVolume::createOctree()
+{
+	UE_LOG(CubiquityLog, Log, TEXT("ACubiquityColoredCubesVolume::loadVolume"));
+
+	if (volume()->hasRootOctreeNode())
+	{
+		auto rootOctreeNode = volume()->rootOctreeNode();
+
+		FActorSpawnParameters spawnParameters;
+		spawnParameters.Owner = this;
+		octreeRootNodeActor = GetWorld()->SpawnActor<ACubiquityOctreeNode>(spawnParameters);
+		octreeRootNodeActor->initialiseOctreeNode(rootOctreeNode, RootComponent, Material);
+		octreeRootNodeActor->processOctreeNode(rootOctreeNode);
+	}
 }
 
 void ACubiquityVolume::updateMaterial()
@@ -95,6 +138,23 @@ void ACubiquityVolume::updateMaterial()
 		{
 			mesh->SetMaterial(0, Material);
 		}
+	}
+}
+
+
+void ACubiquityVolume::commitChanges()
+{
+	if (volume())
+	{
+		volume()->acceptOverrideChunks();
+	}
+}
+
+void ACubiquityVolume::discardChanges()
+{
+	if (volume())
+	{
+		volume()->discardOverrideChunks();
 	}
 }
 

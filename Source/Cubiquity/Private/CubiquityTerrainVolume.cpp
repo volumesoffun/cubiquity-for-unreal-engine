@@ -10,52 +10,18 @@ ACubiquityTerrainVolume::ACubiquityTerrainVolume(const FObjectInitializer& PCIP)
 	: Super(PCIP)
 {
 	volumeFileName = TEXT("G:/cubiquity/Data/VoxelDatabases/Version 0/SmoothVoxeliensTerrain.vdb");
-
-	/*ConstructorHelpers::FObjectFinder<UMaterial> materialInstance(TEXT("Material'/Cubiquity/Materials/Triplanar5_Inst.Triplanar5_Inst'"));
-
-	if (materialInstance.Succeeded())
-	{
-		UE_LOG(CubiquityLog, Log, TEXT("Found material"));
-	}
-	else
-	{
-		UE_LOG(CubiquityLog, Log, TEXT("Didn't find material"));
-	}*/
 }
-
-/*ACubiquityTerrainVolume::~ACubiquityTerrainVolume()
-{
-	//Cubiquity::validate(cuDeleteTerrainVolume(volumeHandle));
-}*/
 
 void ACubiquityTerrainVolume::PostActorCreated()
 {
 	UE_LOG(CubiquityLog, Log, TEXT("ACubiquityTerrainVolume::PostActorCreated"));
-
-	loadVolume();
-
-	const auto eyePosition = eyePositionInVolumeSpace();
-	//while (!volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold)) { /*Keep calling update until it returns true*/ }
-	volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold);
-
-	createOctree();
 	
 	Super::PostActorCreated();
 }
 
 void ACubiquityTerrainVolume::PostLoad()
 {
-	//In here, we are loading an existing volume. We should initialise all the Cubiquity stuff by loading the filename from the UProperty
-	//It seems too early to spawn actors as the World doesn't exist yet.
-	//Actors in the tree will have been serialised anyway so should be loaded.
-
 	UE_LOG(CubiquityLog, Log, TEXT("ACubiquityTerrainVolume::PostLoad"));
-
-	loadVolume();
-
-	const auto eyePosition = eyePositionInVolumeSpace();
-	//while (!volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold)) { /*Keep calling update until it returns true*/ }
-	volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold);
 
 	Super::PostLoad();
 }
@@ -64,41 +30,12 @@ void ACubiquityTerrainVolume::Destroyed()
 {
 	Super::Destroyed();
 
-	volume.reset(nullptr);
-}
-
-void ACubiquityTerrainVolume::createOctree()
-{
-	UE_LOG(CubiquityLog, Log, TEXT("ACubiquityTerrainVolume::loadVolume"));
-
-	if (volume->hasRootOctreeNode())
-	{
-		auto rootOctreeNode = volume->rootOctreeNode();
-
-		FActorSpawnParameters spawnParameters;
-		spawnParameters.Owner = this;
-		octreeRootNodeActor = GetWorld()->SpawnActor<ACubiquityOctreeNode>(spawnParameters);
-		octreeRootNodeActor->initialiseOctreeNode(rootOctreeNode, RootComponent, Material);
-		octreeRootNodeActor->processOctreeNode(rootOctreeNode);
-	}
+	m_volume.reset(nullptr);
 }
 
 void ACubiquityTerrainVolume::loadVolume()
 {
-	volume = loadVolumeImpl<Cubiquity::TerrainVolume>();
-}
-
-void ACubiquityTerrainVolume::Tick(float DeltaSeconds)
-{
-	const auto eyePosition = eyePositionInVolumeSpace();
-	volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold);
-
-	if (octreeRootNodeActor)
-	{
-		octreeRootNodeActor->processOctreeNode(volume->rootOctreeNode());
-	}
-
-	Super::Tick(DeltaSeconds);
+	m_volume = loadVolumeImpl<Cubiquity::TerrainVolume>();
 }
 
 void ACubiquityTerrainVolume::sculptTerrain(const FVector& worldPosition, float innerRadius, float outerRadius, float opacity)
@@ -111,7 +48,7 @@ void ACubiquityTerrainVolume::sculptTerrain(const FVector& worldPosition, float 
 
 	auto voxelPosition = worldToVolume(worldPosition);
 
-	volume->sculpt({ voxelPosition.X, voxelPosition.Y, voxelPosition.Z }, innerRadius, outerRadius, opacity);
+	m_volume->sculpt({ voxelPosition.X, voxelPosition.Y, voxelPosition.Z }, innerRadius, outerRadius, opacity);
 }
 
 FVector ACubiquityTerrainVolume::pickSurface(const FVector& start, const FVector& direction)
@@ -119,7 +56,7 @@ FVector ACubiquityTerrainVolume::pickSurface(const FVector& start, const FVector
 	bool success;
 	const FVector localStart = worldToVolume(start);
 	const FVector localDirection = worldToVolume(direction);
-	auto hitLocation = volume->pickSurface({ localStart.X, localStart.Y, localStart.Z }, { localDirection.X, localDirection.Y, localDirection.Z }, &success);
+	auto hitLocation = m_volume->pickSurface({ localStart.X, localStart.Y, localStart.Z }, { localDirection.X, localDirection.Y, localDirection.Z }, &success);
 
 	if (!success)
 	{
@@ -132,11 +69,11 @@ FVector ACubiquityTerrainVolume::pickSurface(const FVector& start, const FVector
 
 void ACubiquityTerrainVolume::setVoxel(const FIntVector& position, const UCubiquityMaterialSet* materialSet)
 {
-	volume->setVoxel({ position.X, position.Y, position.Z }, *materialSet);
+	m_volume->setVoxel({ position.X, position.Y, position.Z }, *materialSet);
 }
 
 UCubiquityMaterialSet* ACubiquityTerrainVolume::getVoxel(const FIntVector& position)
 {
-	const auto& voxel = volume->getVoxel({ position.X, position.Y, position.Z });
+	const auto& voxel = m_volume->getVoxel({ position.X, position.Y, position.Z });
 	return new UCubiquityMaterialSet(voxel);
 }

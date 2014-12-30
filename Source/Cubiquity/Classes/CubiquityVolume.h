@@ -54,22 +54,31 @@ class ACubiquityVolume : public AActor
 
 	//This saves the temporary changes made to the volume in memory to the backing store
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
-	virtual void commitChanges() const PURE_VIRTUAL(ACubiquityVolume::commitChanges, );
+	void commitChanges();
 
 	//This discards the temporary changes made to the volume
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
-	virtual void discardChanges() const PURE_VIRTUAL(ACubiquityVolume::discardChanges, );
+	void discardChanges();
 
 protected:
+	//This provides access to the subclass' volume pointer in a subtype-independant way
+	//We can access all the general Volume stuff by this
+	//It returns a non-owning pointer which should not be stored and only used directly
+	virtual Cubiquity::Volume* volume() PURE_VIRTUAL(ACubiquityVolume::getVolume, return nullptr;);
 
+	//The the rendering position for the volume mesh extraction
 	FVector eyePositionInVolumeSpace() const;
 
 	ACubiquityOctreeNode* octreeRootNodeActor = nullptr;
 
-	virtual void createOctree() PURE_VIRTUAL(ACubiquityVolume::createOctree, );
+	//Create the octreeRootNodeActor and propagate down the tree
+	void createOctree();
 
+	//Load the volume into memory based on volumeFileName
+	//The subclasses implementation of this will call loadVolumeImpl() with the correct template type
 	virtual void loadVolume() PURE_VIRTUAL(ACubiquityVolume::loadVolume, );
 
+	//This function is here and templated to avoid code duplication due to different volume types
 	template <typename VolumeType>
 	std::unique_ptr<VolumeType> loadVolumeImpl()
 	{
