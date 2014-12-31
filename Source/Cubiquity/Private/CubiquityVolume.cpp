@@ -112,6 +112,22 @@ void ACubiquityVolume::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 }
 
+void ACubiquityVolume::PostEditChangeProperty(FPropertyChangedEvent & PropertyChangedEvent)
+{
+	Super::PostEditChangeProperty(PropertyChangedEvent);
+
+	const FName PropertyName = PropertyChangedEvent.Property ? PropertyChangedEvent.Property->GetFName() : NAME_None;
+
+	if (PropertyName == FName(TEXT("volumeFileName")))
+	{
+		//Should we save the old volume? Probably not without asking.
+		//Unload old volume
+		//Load new one
+
+		updateMaterial(); //TODO needed?
+	}
+}
+
 void ACubiquityVolume::createOctree()
 {
 	UE_LOG(CubiquityLog, Log, TEXT("ACubiquityColoredCubesVolume::loadVolume"));

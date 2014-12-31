@@ -36,6 +36,8 @@ public:
 
 	virtual void Tick(float DeltaSeconds) override;
 
+	void PostEditChangeProperty(FPropertyChangedEvent & PropertyChangedEvent) override;
+
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Cubiquity")
 	UMaterialInterface* Material; //The material applied to the terrain
