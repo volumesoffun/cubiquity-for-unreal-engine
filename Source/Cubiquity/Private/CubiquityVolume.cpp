@@ -126,6 +126,10 @@ void ACubiquityVolume::PostEditChangeProperty(FPropertyChangedEvent & PropertyCh
 
 		updateMaterial(); //TODO needed?
 	}
+	else if (PropertyName == FName(TEXT("Material")))
+	{
+		updateMaterial();
+	}
 }
 
 void ACubiquityVolume::createOctree()
