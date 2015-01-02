@@ -26,8 +26,6 @@ public:
 
 	virtual void Destroyed() override;
 
-	UCubiquityMeshComponent* mesh = nullptr;
-
 	void initialiseOctreeNode(const Cubiquity::OctreeNode& newOctreeNode, USceneComponent* parent, UMaterialInterface* material);
 
 	void processOctreeNode(const Cubiquity::OctreeNode& octreeNode);
@@ -35,14 +33,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
 	ACubiquityVolume* getVolume() const;
 
-	Cubiquity::Vector<int32_t> octreeNodePosition() const { return m_octreeNodePosition; }
-
 private:
 
 	ACubiquityOctreeNode* children[2][2][2];
 
 	//This could maybe be given by actor position passed through worldToVolume?
 	Cubiquity::Vector<int32_t> m_octreeNodePosition;
+
+	UCubiquityMeshComponent* mesh = nullptr;
 
 	uint32_t structureLastSynced = 0;
 	uint32_t propertiesLastSynced = 0;

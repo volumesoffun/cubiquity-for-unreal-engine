@@ -88,7 +88,7 @@ void ACubiquityOctreeNode::processOctreeNode(const Cubiquity::OctreeNode& octree
 			ACubiquityOctreeNode* parentOctreeNodeActor = Cast<ACubiquityOctreeNode>(GetOwner());
 			if (parentOctreeNodeActor)
 			{
-				parentPosition = parentOctreeNodeActor->octreeNodePosition();
+				parentPosition = parentOctreeNodeActor->m_octreeNodePosition;
 			}
 			else
 			{
