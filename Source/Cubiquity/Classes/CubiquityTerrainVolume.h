@@ -31,9 +31,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
 	FVector pickSurface(FVector localStartPosition, FVector localDirection);
 
+	//Set a voxel in the volume to a specific value
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
 	void setVoxel(FIntVector localPosition, const UCubiquityMaterialSet* materialSet);
 
+	//Get the value of a voxel in the terrain
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
 	UCubiquityMaterialSet* getVoxel(FIntVector localPosition);
 

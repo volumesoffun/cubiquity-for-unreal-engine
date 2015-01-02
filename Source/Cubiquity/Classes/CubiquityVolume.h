@@ -29,25 +29,23 @@ public:
 	virtual void PostLoad() override;
 	virtual void OnConstruction(const FTransform & transform) override;
 	virtual void PostInitializeComponents() override;
-	//void PostActorConstruction() override;
+	//virtual void PostActorConstruction() override;
 	virtual void BeginPlay() override;
-	//PostEditChangeProperty for editing in the editor
 
 	virtual void Destroyed() override;
 
 	virtual void Tick(float DeltaSeconds) override;
 
-	void PostEditChangeProperty(FPropertyChangedEvent & PropertyChangedEvent) override;
+	virtual void PostEditChangeProperty(FPropertyChangedEvent & PropertyChangedEvent) override;
 
-
+	/** The material applied to the terrain */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Cubiquity")
-	UMaterialInterface* Material; //The material applied to the terrain
-
-	UCubiquityUpdateComponent* root; //Used to attach the mesh component hierachy to
+	UMaterialInterface* Material;
 
 	UPROPERTY(EditAnywhere, Category = "Cubiquity")
 	FString volumeFileName;
 
+	/** How aggressive the LOD scaling is. Low numbers are better quality. Usually between 0.5 and 2.0 */
 	UPROPERTY(EditAnywhere, Category = "Cubiquity")
 	float lodThreshold = 1.0;
 
@@ -63,13 +61,19 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
 	void discardChanges();
 
+	// Convert fom world-space to volume-space for a given volume
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
 	static FVector worldToVolume(const ACubiquityVolume* const volume, const FVector& worldPosition);
 
+	// Convert fom volume-space to world-space for a given volume
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
 	static FVector volumeToWorld(const ACubiquityVolume* const volume, const FVector& localPosition);
 
 protected:
+
+	//Used to attach the mesh component hierachy to
+	UCubiquityUpdateComponent* root;
+
 	//This provides access to the subclass' volume pointer in a subtype-independant way
 	//We can access all the general Volume stuff by this
 	//It returns a non-owning pointer which should not be stored and only used directly
@@ -78,6 +82,7 @@ protected:
 	//The the rendering position for the volume mesh extraction
 	FVector eyePositionInVolumeSpace() const;
 
+	//This is the root of the octree for our volume
 	ACubiquityOctreeNode* octreeRootNodeActor = nullptr;
 
 	//Create the octreeRootNodeActor and propagate down the tree

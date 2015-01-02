@@ -24,15 +24,19 @@ public:
 
 	virtual void Destroyed() override;
 
+	//Along a raycast, get the position of the first non-empty voxel
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
 	FVector pickFirstSolidVoxel(FVector localStartPosition, FVector localDirection);
 
+	//Along a raycast, get the position of the last empty voxel
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
 	FVector pickLastEmptyVoxel(FVector localStartPosition, FVector localDirection);
 
+	//Set a voxel in the volume to a specific value
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
 	void setVoxel(FIntVector localPosition, FColor newColor);
 
+	//Get the value of a voxel in the terrain
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
 	FColor getVoxel(FIntVector localPosition);
 
