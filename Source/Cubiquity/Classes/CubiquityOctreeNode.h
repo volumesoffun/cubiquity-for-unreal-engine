@@ -15,7 +15,7 @@ class UCubiquityMeshComponent;
  * This is marked transient so that Cubiquity can recreate on level loading
  * These objects can be created and destroyed by Cubiquity as the structure of the octree changes.
  */
-UCLASS(Transient)
+UCLASS(Transient, NotPlaceable)
 class ACubiquityOctreeNode : public AActor
 {
 	GENERATED_BODY()
