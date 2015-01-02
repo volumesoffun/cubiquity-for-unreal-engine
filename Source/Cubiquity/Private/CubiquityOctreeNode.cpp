@@ -14,6 +14,8 @@ ACubiquityOctreeNode::ACubiquityOctreeNode(const FObjectInitializer& PCIP)
 	mesh = PCIP.CreateDefaultSubobject<UCubiquityMeshComponent>(this, TEXT("mesh"));
 	RootComponent = mesh;
 
+	bListedInSceneOutliner = false;
+
 	for (uint32_t z = 0; z < 2; z++)
 	{
 		for (uint32_t y = 0; y < 2; y++)
