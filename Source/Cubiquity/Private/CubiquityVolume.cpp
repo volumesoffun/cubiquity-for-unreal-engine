@@ -26,8 +26,8 @@ void ACubiquityVolume::PostActorCreated()
 	loadVolume();
 
 	const auto eyePosition = eyePositionInVolumeSpace();
-	while (!volume()->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, 0.0)) { /*Keep calling update until it returns true*/ }
-	//volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold);
+	//while (!volume()->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, 0.0)) { /*Keep calling update until it returns true*/ }
+	volume()->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold);
 
 	createOctree();
 
@@ -43,8 +43,8 @@ void ACubiquityVolume::PostLoad()
 	loadVolume();
 
 	const auto eyePosition = eyePositionInVolumeSpace();
-	while (!volume()->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, 0.0)) { /*Keep calling update until it returns true*/ }
-	//volume->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold);
+	//while (!volume()->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, 0.0)) { /*Keep calling update until it returns true*/ }
+	volume()->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold);
 
 	Super::PostLoad();
 }

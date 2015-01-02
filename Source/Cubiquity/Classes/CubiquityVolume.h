@@ -28,7 +28,8 @@ public:
 	virtual void PostActorCreated() override;
 	virtual void PostLoad() override;
 	virtual void OnConstruction(const FTransform & transform) override;
-	virtual void PostInitializeComponents();
+	virtual void PostInitializeComponents() override;
+	//void PostActorConstruction() override;
 	virtual void BeginPlay() override;
 	//PostEditChangeProperty for editing in the editor
 
