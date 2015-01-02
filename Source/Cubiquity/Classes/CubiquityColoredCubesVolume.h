@@ -9,7 +9,7 @@
 class UCubiquityMeshComponent;
 
 /**
-*
+* A voxel terrain object that displays as cubes
 */
 UCLASS()
 class ACubiquityColoredCubesVolume : public ACubiquityVolume

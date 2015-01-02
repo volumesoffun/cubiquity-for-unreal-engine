@@ -42,6 +42,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Cubiquity")
 	UMaterialInterface* Material;
 
+	/** The filename on disk to load from or save to */
 	UPROPERTY(EditAnywhere, Category = "Cubiquity")
 	FString volumeFileName;
 

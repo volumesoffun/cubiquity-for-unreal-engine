@@ -10,7 +10,7 @@ class UCubiquityMeshComponent;
 class UCubiquityMaterialSet;
 
 /**
-*
+* A voxel terrain object that uses marching cubes
 */
 UCLASS()
 class ACubiquityTerrainVolume : public ACubiquityVolume
