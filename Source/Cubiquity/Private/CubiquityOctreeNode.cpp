@@ -39,7 +39,10 @@ void ACubiquityOctreeNode::Destroyed()
 	for (AActor* childActor : childrenActors)
 	{
 		//UE_LOG(CubiquityLog, Log, TEXT("  Destroying childActor"));
-		GetWorld()->DestroyActor(childActor);
+		if (childActor && !childActor->IsPendingKillPending())
+		{
+			GetWorld()->DestroyActor(childActor);
+		}
 	}
 
 	Super::Destroyed();
