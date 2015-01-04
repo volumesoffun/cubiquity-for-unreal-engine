@@ -25,20 +25,20 @@ public:
 	virtual void Destroyed() override;
 
 	//Along a raycast, get the position of the first non-empty voxel
-	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
-	FVector pickFirstSolidVoxel(FVector localStartPosition, FVector localDirection);
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Cubiquity")
+	FVector pickFirstSolidVoxel(FVector localStartPosition, FVector localDirection) const;
 
 	//Along a raycast, get the position of the last empty voxel
-	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
-	FVector pickLastEmptyVoxel(FVector localStartPosition, FVector localDirection);
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Cubiquity")
+	FVector pickLastEmptyVoxel(FVector localStartPosition, FVector localDirection) const;
 
 	//Set a voxel in the volume to a specific value
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
 	void setVoxel(FVector localPosition, FColor newColor);
 
 	//Get the value of a voxel in the terrain
-	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
-	FColor getVoxel(FVector localPosition);
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Cubiquity")
+	FColor getVoxel(FVector localPosition) const;
 
 private:
 	std::unique_ptr<Cubiquity::ColoredCubesVolume> m_volume = nullptr;

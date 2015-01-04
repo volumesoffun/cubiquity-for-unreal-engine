@@ -45,7 +45,7 @@ void ACubiquityTerrainVolume::sculptTerrain(FVector localPosition, float innerRa
 	m_volume->sculpt({ localPosition.X, localPosition.Y, localPosition.Z }, innerRadius, outerRadius, opacity);
 }
 
-FVector ACubiquityTerrainVolume::pickSurface(FVector localStartPosition, FVector localDirection)
+FVector ACubiquityTerrainVolume::pickSurface(FVector localStartPosition, FVector localDirection) const
 {
 	bool success;
 	auto hitLocation = m_volume->pickSurface({ localStartPosition.X, localStartPosition.Y, localStartPosition.Z }, { localDirection.X, localDirection.Y, localDirection.Z }, &success);
@@ -64,7 +64,7 @@ void ACubiquityTerrainVolume::setVoxel(FVector position, const UCubiquityMateria
 	m_volume->setVoxel({ position.X, position.Y, position.Z }, *materialSet);
 }
 
-UCubiquityMaterialSet* ACubiquityTerrainVolume::getVoxel(FVector position)
+UCubiquityMaterialSet* ACubiquityTerrainVolume::getVoxel(FVector position) const
 {
 	const auto& voxel = m_volume->getVoxel({ position.X, position.Y, position.Z });
 	return new UCubiquityMaterialSet(voxel);

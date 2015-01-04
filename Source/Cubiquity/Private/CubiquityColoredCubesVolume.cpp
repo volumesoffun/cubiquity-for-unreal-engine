@@ -39,7 +39,7 @@ void ACubiquityColoredCubesVolume::loadVolume()
 	m_volume = loadVolumeImpl<Cubiquity::ColoredCubesVolume>();
 }
 
-FVector ACubiquityColoredCubesVolume::pickFirstSolidVoxel(FVector localStartPosition, FVector localDirection)
+FVector ACubiquityColoredCubesVolume::pickFirstSolidVoxel(FVector localStartPosition, FVector localDirection) const
 {
 	bool success;
 	auto hitLocation = m_volume->pickFirstSolidVoxel({ localStartPosition.X, localStartPosition.Y, localStartPosition.Z }, { localDirection.X, localDirection.Y, localDirection.Z }, &success);
@@ -53,7 +53,7 @@ FVector ACubiquityColoredCubesVolume::pickFirstSolidVoxel(FVector localStartPosi
 	return FVector(hitLocation.x, hitLocation.y, hitLocation.z);
 }
 
-FVector ACubiquityColoredCubesVolume::pickLastEmptyVoxel(FVector localStartPosition, FVector localDirection)
+FVector ACubiquityColoredCubesVolume::pickLastEmptyVoxel(FVector localStartPosition, FVector localDirection) const
 {
 	bool success;
 	auto hitLocation = m_volume->pickLastEmptyVoxel({ localStartPosition.X, localStartPosition.Y, localStartPosition.Z }, { localDirection.X, localDirection.Y, localDirection.Z }, &success);
@@ -72,7 +72,7 @@ void ACubiquityColoredCubesVolume::setVoxel(FVector position, FColor newColor)
 	m_volume->setVoxel({ position.X, position.Y, position.Z }, { newColor.R, newColor.G, newColor.B, newColor.A });
 }
 
-FColor ACubiquityColoredCubesVolume::getVoxel(FVector position)
+FColor ACubiquityColoredCubesVolume::getVoxel(FVector position) const
 {
 	const auto& voxel = m_volume->getVoxel({ position.X, position.Y, position.Z });
 	return {voxel.red(), voxel.green(), voxel.blue(), voxel.alpha()};
