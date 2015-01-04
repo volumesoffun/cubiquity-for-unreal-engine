@@ -62,13 +62,21 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
 	void discardChanges();
 
-	// Convert fom world-space to volume-space for a given volume
+	// Convert fom world-space to volume-space
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Cubiquity")
-	static FVector worldToVolume(const ACubiquityVolume* const volume, const FVector& worldPosition);
+	FVector worldPositionToVolumePosition(const FVector& worldPosition) const;
 
-	// Convert fom volume-space to world-space for a given volume
+	// Convert fom volume-space to world-space
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Cubiquity")
-	static FVector volumeToWorld(const ACubiquityVolume* const volume, const FVector& localPosition);
+	FVector volumePositionToWorldPosition(const FVector& localPosition) const;
+
+	// Convert fom world-space to volume-space
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Cubiquity")
+	FVector worldDirectionToVolumeDirection(const FVector& worldDirection) const;
+
+	// Convert fom volume-space to world-space
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Cubiquity")
+	FVector volumeDirectionToWorldDirection(const FVector& localDirection) const;
 
 protected:
 
