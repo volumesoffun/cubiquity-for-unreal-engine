@@ -59,12 +59,12 @@ FVector ACubiquityTerrainVolume::pickSurface(FVector localStartPosition, FVector
 	return { hitLocation.x, hitLocation.y, hitLocation.z };
 }
 
-void ACubiquityTerrainVolume::setVoxel(FIntVector position, const UCubiquityMaterialSet* materialSet)
+void ACubiquityTerrainVolume::setVoxel(FVector position, const UCubiquityMaterialSet* materialSet)
 {
 	m_volume->setVoxel({ position.X, position.Y, position.Z }, *materialSet);
 }
 
-UCubiquityMaterialSet* ACubiquityTerrainVolume::getVoxel(FIntVector position)
+UCubiquityMaterialSet* ACubiquityTerrainVolume::getVoxel(FVector position)
 {
 	const auto& voxel = m_volume->getVoxel({ position.X, position.Y, position.Z });
 	return new UCubiquityMaterialSet(voxel);

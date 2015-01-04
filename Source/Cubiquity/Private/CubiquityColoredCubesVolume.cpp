@@ -67,12 +67,12 @@ FVector ACubiquityColoredCubesVolume::pickLastEmptyVoxel(FVector localStartPosit
 	return FVector(hitLocation.x, hitLocation.y, hitLocation.z);
 }
 
-void ACubiquityColoredCubesVolume::setVoxel(FIntVector position, FColor newColor)
+void ACubiquityColoredCubesVolume::setVoxel(FVector position, FColor newColor)
 {
 	m_volume->setVoxel({ position.X, position.Y, position.Z }, { newColor.R, newColor.G, newColor.B, newColor.A });
 }
 
-FColor ACubiquityColoredCubesVolume::getVoxel(FIntVector position)
+FColor ACubiquityColoredCubesVolume::getVoxel(FVector position)
 {
 	const auto& voxel = m_volume->getVoxel({ position.X, position.Y, position.Z });
 	return {voxel.red(), voxel.green(), voxel.blue(), voxel.alpha()};

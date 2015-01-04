@@ -34,11 +34,11 @@ public:
 
 	//Set a voxel in the volume to a specific value
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
-	void setVoxel(FIntVector localPosition, FColor newColor);
+	void setVoxel(FVector localPosition, FColor newColor);
 
 	//Get the value of a voxel in the terrain
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
-	FColor getVoxel(FIntVector localPosition);
+	FColor getVoxel(FVector localPosition);
 
 private:
 	std::unique_ptr<Cubiquity::ColoredCubesVolume> m_volume = nullptr;

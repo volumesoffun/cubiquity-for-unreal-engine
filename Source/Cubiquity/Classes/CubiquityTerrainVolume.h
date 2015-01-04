@@ -33,11 +33,11 @@ public:
 
 	//Set a voxel in the volume to a specific value
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
-	void setVoxel(FIntVector localPosition, const UCubiquityMaterialSet* materialSet);
+	void setVoxel(FVector localPosition, const UCubiquityMaterialSet* materialSet);
 
 	//Get the value of a voxel in the terrain
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
-	UCubiquityMaterialSet* getVoxel(FIntVector localPosition);
+	UCubiquityMaterialSet* getVoxel(FVector localPosition);
 
 private:
 	std::unique_ptr<Cubiquity::TerrainVolume> m_volume = nullptr;
