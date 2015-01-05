@@ -51,7 +51,7 @@ bool UCubiquityMeshComponent::SetGeneratedMeshTrianglesTerrain(const Cubiquity::
 	uint32_t noOfIndices;
 	uint16_t* cubuquityIndices;
 	uint16_t noOfVertices;
-	Cubiquity::TerrainVertex* cubiquityVertices;
+	const Cubiquity::TerrainVertex* cubiquityVertices;
 	octreeNode.getMesh(&noOfVertices, &cubiquityVertices, &noOfIndices, &cubuquityIndices);
 
 	for (uint32_t i = 0; i < noOfVertices; ++i)
@@ -60,35 +60,13 @@ bool UCubiquityMeshComponent::SetGeneratedMeshTrianglesTerrain(const Cubiquity::
 
 		FDynamicMeshVertex Vert;
 
-		Vert.Position = FVector((1.0 / 256.0) * cubiquityVertex.encodedPos().x, (1.0 / 256.0) * cubiquityVertex.encodedPos().y, (1.0 / 256.0) * cubiquityVertex.encodedPos().z); //NOTE Y and Z swapped
+		const auto position = cubiquityVertex.position();
+		Vert.Position = FVector(position.x, position.y, position.z);
 
-		const uint16_t encodedNormal = cubiquityVertex.encodedNormal();
-		const uint16_t ux = (encodedNormal >> 8) & 0xFF;
-		const uint16_t uy = (encodedNormal)& 0xFF;
+		const auto normal = cubiquityVertex.normal();
+		Vert.TangentZ = FVector(normal.x, normal.y, normal.z);// .SafeNormal();
 
-		// Convert to floats in the range [-1.0f, +1.0f].
-		const float ex = ux / 127.5f - 1.0f;
-		const float ey = uy / 127.5f - 1.0f;
-
-		// Reconstruct the original vector. This is a C++ implementation
-		// of Listing 2 of http://jcgt.org/published/0003/02/01/
-		float vx = ex;
-		float vy = ey;
-		float vz = 1.0f - FMath::Abs(ex) - FMath::Abs(ey);
-
-		if (vz < 0.0f)
-		{
-			float refX = ((1.0f - FMath::Abs(vy)) * (vx >= 0.0f ? +1.0f : -1.0f));
-			float refY = ((1.0f - FMath::Abs(vx)) * (vy >= 0.0f ? +1.0f : -1.0f));
-			vx = refX;
-			vy = refY;
-		}
-
-		// Normalise and return the result.
-		FVector worldNormal(vx, vy, vz);
-		Vert.TangentZ = worldNormal;// .SafeNormal();
-
-		auto materials = cubiquityVertex.materials();
+		const auto materials = cubiquityVertex.materials();
 		Vert.Color = FColor(materials[0], materials[1], materials[2], materials[3]); //TODO make this from materials
 
 		Vert.TextureCoordinate.Set(Vert.Position.X, Vert.Position.Y);
@@ -99,9 +77,9 @@ bool UCubiquityMeshComponent::SetGeneratedMeshTrianglesTerrain(const Cubiquity::
 	//The normals are already set but we need the tangents and bitangents. Set these on a per-triangle basis based on the geometry
 	for (uint16_t i = 0; i < noOfIndices; ++i)
 	{
-		uint16_t index0 = cubuquityIndices[i];
-		uint16_t index1 = cubuquityIndices[++i];
-		uint16_t index2 = cubuquityIndices[++i];
+		const uint16_t index0 = cubuquityIndices[i];
+		const uint16_t index1 = cubuquityIndices[++i];
+		const uint16_t index2 = cubuquityIndices[++i];
 
 		FDynamicMeshVertex& vertex0 = terrainVertices[index0];
 		FDynamicMeshVertex& vertex1 = terrainVertices[index1];

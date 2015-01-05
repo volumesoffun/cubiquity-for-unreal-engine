@@ -141,6 +141,34 @@ namespace Cubiquity
 		Vector<uint16_t> encodedPos() const { return{ m_vertex.encodedPosX, m_vertex.encodedPosY, m_vertex.encodedPosZ }; }
 		uint16_t encodedNormal() const { return{ m_vertex.encodedNormal }; }
 
+		Vector<float> position() const { return{ (1.0 / 256.0) * m_vertex.encodedPosX, (1.0 / 256.0) * m_vertex.encodedPosY, (1.0 / 256.0) * m_vertex.encodedPosZ }; }
+
+		Vector<float> normal() const
+		{
+			const uint16_t encodedNormal = m_vertex.encodedNormal;
+			const uint16_t ux = (encodedNormal >> 8) & 0xFF;
+			const uint16_t uy = (encodedNormal)& 0xFF;
+
+			// Convert to floats in the range [-1.0f, +1.0f].
+			const float ex = ux / 127.5f - 1.0f;
+			const float ey = uy / 127.5f - 1.0f;
+
+			// Reconstruct the original vector. This is a C++ implementation
+			// of Listing 2 of http://jcgt.org/published/0003/02/01/
+			float vx = ex;
+			float vy = ey;
+			const float vz = 1.0f - std::abs(ex) - std::abs(ey);
+
+			if (vz < 0.0f)
+			{
+				const float refX = ((1.0f - std::abs(vy)) * (vx >= 0.0f ? +1.0f : -1.0f));
+				const float refY = ((1.0f - std::abs(vx)) * (vy >= 0.0f ? +1.0f : -1.0f));
+				vx = refX;
+				vy = refY;
+			}
+			return {vx, vy, vz};
+		}
+
 		std::array<uint8_t, 8> materials() const
 		{
 			return{ m_vertex.material0, m_vertex.material1, m_vertex.material2, m_vertex.material3, m_vertex.material4, m_vertex.material5, m_vertex.material6, m_vertex.material7 };
