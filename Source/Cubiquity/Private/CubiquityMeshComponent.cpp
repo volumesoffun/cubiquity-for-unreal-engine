@@ -130,8 +130,8 @@ bool UCubiquityMeshComponent::SetGeneratedMeshTrianglesColoredCubes(const Cubiqu
 
 		FColoredCubesVertex Vert;
 
-		Vert.Position = FVector(cubiquityVertex.encodedPos().x, cubiquityVertex.encodedPos().y, cubiquityVertex.encodedPos().z); //NOTE Y and Z swapped
-		Vert.Position -= FVector(0.5, 0.5, 0.5); //Offset
+		const auto& position = cubiquityVertex.position();
+		Vert.Position = FVector(position.x, position.y, position.z);
 
 		const auto& color = cubiquityVertex.color();
 		Vert.Color = FColor(color.red(), color.green(), color.blue(), color.alpha());
@@ -142,13 +142,13 @@ bool UCubiquityMeshComponent::SetGeneratedMeshTrianglesColoredCubes(const Cubiqu
 	//TODO: Could we do these 6 at at time for each quad?
 	for (uint16_t i = 0; i < noOfIndices; ++i)
 	{
-		uint16_t index0 = cubuquityIndices[i];
-		uint16_t index1 = cubuquityIndices[++i];
-		uint16_t index2 = cubuquityIndices[++i];
+		const uint16_t index0 = cubuquityIndices[i];
+		const uint16_t index1 = cubuquityIndices[++i];
+		const uint16_t index2 = cubuquityIndices[++i];
 
-		FColoredCubesVertex& vertex0 = coloredCubesVertices[index0];
-		FColoredCubesVertex& vertex1 = coloredCubesVertices[index1];
-		FColoredCubesVertex& vertex2 = coloredCubesVertices[index2];
+		const FColoredCubesVertex& vertex0 = coloredCubesVertices[index0];
+		const FColoredCubesVertex& vertex1 = coloredCubesVertices[index1];
+		const FColoredCubesVertex& vertex2 = coloredCubesVertices[index2];
 
 		//Reverse winding order
 		indices.Add(index2);

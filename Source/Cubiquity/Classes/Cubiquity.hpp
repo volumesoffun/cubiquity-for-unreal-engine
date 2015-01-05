@@ -128,6 +128,8 @@ namespace Cubiquity
 		ColoredCubesVertex() = delete;
 		Vector<uint8_t> encodedPos() const { return{ m_vertex.encodedPosX, m_vertex.encodedPosY, m_vertex.encodedPosZ }; }
 
+		Vector<float> position() const { return{ m_vertex.encodedPosX - 0.5, m_vertex.encodedPosY - 0.5, m_vertex.encodedPosZ - 0.5 }; }
+
 		Color color() const { return{ m_vertex.data }; };
 
 	private:
