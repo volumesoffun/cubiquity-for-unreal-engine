@@ -246,8 +246,6 @@ bool UCubiquityMeshComponent::GetPhysicsTriMeshData(struct FTriMeshCollisionData
 {
 	if (ContainsPhysicsTriMeshData(true))
 	{
-		FTriIndices Triangle;
-
 		if (volumeType == Cubiquity::VolumeType::Terrain)
 		{
 			for (const auto& vertex : terrainVertices)
@@ -263,15 +261,13 @@ bool UCubiquityMeshComponent::GetPhysicsTriMeshData(struct FTriMeshCollisionData
 			}
 		}
 		
-		for (int32 i = 0; i < indices.Num(); ++i)
+		for (auto index = indices.CreateConstIterator(); index;)
 		{
-			uint16_t index0 = indices[i];
-			uint16_t index1 = indices[++i];
-			uint16_t index2 = indices[++i];
+			FTriIndices Triangle;
 
-			Triangle.v0 = index0;
-			Triangle.v1 = index1;
-			Triangle.v2 = index2;
+			Triangle.v0 = *index++;
+			Triangle.v1 = *index++;
+			Triangle.v2 = *index++;
 
 			CollisionData->Indices.Add(Triangle);
 			//CollisionData->MaterialIndices.Add(i); //For physical material properties
@@ -293,7 +289,7 @@ bool UCubiquityMeshComponent::ContainsPhysicsTriMeshData(bool InUseAllTriData) c
 void UCubiquityMeshComponent::UpdateBodySetup() //HERE
 {
 	//UE_LOG(CubiquityLog, Log, TEXT("UCubiquityMeshComponent::UpdateBodySetup"));
-	if (ModelBodySetup == NULL)
+	if (!ModelBodySetup)
 	{
 		SetSimulatePhysics(false);
 		ModelBodySetup = ConstructObject<UBodySetup>(UBodySetup::StaticClass(), this);
