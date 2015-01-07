@@ -46,7 +46,15 @@ public class Cubiquity : ModuleRules
             string PlatformString = (Target.Platform == UnrealTargetPlatform.Win64) ? "Win64" : "Win32";
 
             //Copy the Cubiquity DLL into the binaries directory locally
-            System.IO.File.Copy(Path.Combine(ThirdPartyLibraryPath, "CubiquityC.dll"), Path.Combine(ModulePath, "..", "..", "Binaries", PlatformString, "CubiquityC.dll"), true);
+            FileInfo file = new FileInfo(Path.Combine(ThirdPartyLibraryPath, "CubiquityC.dll"));
+            FileInfo destFile = new FileInfo(Path.Combine(ModulePath, "..", "..", "Binaries", PlatformString, "CubiquityC.dll"));
+            if (destFile.Exists)
+            {
+                if (file.LastWriteTime > destFile.LastWriteTime)
+                {
+                    file.CopyTo(destFile.FullName, true);
+                }
+            }
 
             //Make sure we can link against the .lib file
             PublicAdditionalLibraries.Add(Path.Combine(ThirdPartyLibraryPath, "CubiquityC.lib"));
