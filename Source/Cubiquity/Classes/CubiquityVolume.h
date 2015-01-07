@@ -36,7 +36,9 @@ public:
 
 	virtual void Tick(float DeltaSeconds) override;
 
+#if WITH_EDITOR
 	virtual void PostEditChangeProperty(FPropertyChangedEvent & PropertyChangedEvent) override;
+#endif
 
 	/** The material applied to the terrain */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Cubiquity")

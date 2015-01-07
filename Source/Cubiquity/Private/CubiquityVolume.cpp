@@ -116,6 +116,7 @@ void ACubiquityVolume::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 }
 
+#if WITH_EDITOR
 void ACubiquityVolume::PostEditChangeProperty(FPropertyChangedEvent & PropertyChangedEvent)
 {
 	Super::PostEditChangeProperty(PropertyChangedEvent);
@@ -135,6 +136,7 @@ void ACubiquityVolume::PostEditChangeProperty(FPropertyChangedEvent & PropertyCh
 		updateMaterial();
 	}
 }
+#endif
 
 void ACubiquityVolume::createOctree()
 {
