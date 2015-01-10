@@ -64,8 +64,6 @@ void ACubiquityOctreeNode::initialiseOctreeNode(const Cubiquity::OctreeNode& new
 	meshLastSynced = 0;
 	nodeAndChildrenLastSynced = 0;
 
-	m_octreeNodePosition = newOctreeNode.position();
-
 	mesh->setVolumeType();
 
 	mesh->SetMaterial(0, material);
@@ -87,21 +85,6 @@ void ACubiquityOctreeNode::processOctreeNode(const Cubiquity::OctreeNode& octree
 
 		if (octreeNode.meshLastChanged() > meshLastSynced)
 		{
-			//Set the position of our component relative to the position of the mesh's parent
-			//TODO we shouldn't try to move it here since it should be static.
-			Cubiquity::Vector<int32_t> parentPosition;
-			ACubiquityOctreeNode* parentOctreeNodeActor = Cast<ACubiquityOctreeNode>(GetOwner());
-			if (parentOctreeNodeActor)
-			{
-				parentPosition = parentOctreeNodeActor->m_octreeNodePosition;
-			}
-			else
-			{
-				parentPosition = { 0, 0, 0 };
-			}
-			const auto position = octreeNode.position();
-			mesh->SetRelativeLocation(FVector(position.x - parentPosition.x, position.y - parentPosition.y, position.z - parentPosition.z));
-			
 			if (octreeNode.hasMesh())
 			{
 				//Reset all the mesh data and repopulate it
@@ -132,9 +115,11 @@ void ACubiquityOctreeNode::processOctreeNode(const Cubiquity::OctreeNode& octree
 							{
 								const auto& childNode = octreeNode.childNode({ x, y, z });
 
+								const FVector childNodeVolumePosition = FVector(childNode.position().x, childNode.position().y, childNode.position().z) - FVector(octreeNode.position().x, octreeNode.position().y, octreeNode.position().z);
+								
 								FActorSpawnParameters spawnParameters;
 								spawnParameters.Owner = this;
-								ACubiquityOctreeNode* childNodeActor = GetWorld()->SpawnActor<ACubiquityOctreeNode>(spawnParameters);
+								ACubiquityOctreeNode* childNodeActor = GetWorld()->SpawnActor<ACubiquityOctreeNode>(childNodeVolumePosition, FRotator::ZeroRotator, spawnParameters);
 								childNodeActor->initialiseOctreeNode(childNode, mesh, getVolume()->Material);
 
 								children[x][y][z] = childNodeActor;

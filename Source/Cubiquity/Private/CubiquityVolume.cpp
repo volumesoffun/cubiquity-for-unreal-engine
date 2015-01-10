@@ -146,9 +146,11 @@ void ACubiquityVolume::createOctree()
 	{
 		auto rootOctreeNode = volume()->rootOctreeNode();
 
+		const FVector childNodeVolumePosition = FVector(rootOctreeNode.position().x, rootOctreeNode.position().y, rootOctreeNode.position().z);
+
 		FActorSpawnParameters spawnParameters;
 		spawnParameters.Owner = this;
-		octreeRootNodeActor = GetWorld()->SpawnActor<ACubiquityOctreeNode>(spawnParameters);
+		octreeRootNodeActor = GetWorld()->SpawnActor<ACubiquityOctreeNode>(childNodeVolumePosition, FRotator::ZeroRotator, spawnParameters);
 		octreeRootNodeActor->initialiseOctreeNode(rootOctreeNode, RootComponent, Material);
 		octreeRootNodeActor->processOctreeNode(rootOctreeNode);
 	}

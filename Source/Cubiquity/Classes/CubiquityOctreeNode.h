@@ -37,9 +37,6 @@ private:
 
 	ACubiquityOctreeNode* children[2][2][2];
 
-	//This could maybe be given by actor position passed through worldToVolume?
-	Cubiquity::Vector<int32_t> m_octreeNodePosition;
-
 	UCubiquityMeshComponent* mesh = nullptr;
 
 	uint32_t structureLastSynced = 0;
