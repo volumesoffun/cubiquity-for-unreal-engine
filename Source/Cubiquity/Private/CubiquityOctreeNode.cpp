@@ -50,12 +50,9 @@ void ACubiquityOctreeNode::Destroyed()
 	Super::Destroyed();
 }
 
-void ACubiquityOctreeNode::initialiseOctreeNode(const Cubiquity::OctreeNode& newOctreeNode, USceneComponent* parentComponent, UMaterialInterface* material)
+void ACubiquityOctreeNode::initialiseOctreeNode(const Cubiquity::OctreeNode& newOctreeNode, UMaterialInterface* material)
 {
-	if (parentComponent)
-	{
-		mesh->AttachTo(parentComponent);
-	}
+	AttachRootComponentToActor(GetOwner());
 
 	//UE_LOG(CubiquityLog, Log, TEXT("%d My absolute: %d %d %d     Parent absolute: %d %d %d     Relative: %d %d %d"), depth, nodeX, nodeY, nodeZ, parentX, parentY, parentZ, nodeX - parentX, nodeY - parentY, nodeZ - parentZ);
 	
@@ -120,7 +117,7 @@ void ACubiquityOctreeNode::processOctreeNode(const Cubiquity::OctreeNode& octree
 								FActorSpawnParameters spawnParameters;
 								spawnParameters.Owner = this;
 								ACubiquityOctreeNode* childNodeActor = GetWorld()->SpawnActor<ACubiquityOctreeNode>(childNodeVolumePosition, FRotator::ZeroRotator, spawnParameters);
-								childNodeActor->initialiseOctreeNode(childNode, mesh, getVolume()->Material);
+								childNodeActor->initialiseOctreeNode(childNode, getVolume()->Material);
 
 								children[x][y][z] = childNodeActor;
 							}

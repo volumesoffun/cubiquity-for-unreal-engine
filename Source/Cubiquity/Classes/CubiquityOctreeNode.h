@@ -26,7 +26,7 @@ public:
 
 	virtual void Destroyed() override;
 
-	void initialiseOctreeNode(const Cubiquity::OctreeNode& newOctreeNode, USceneComponent* parent, UMaterialInterface* material);
+	void initialiseOctreeNode(const Cubiquity::OctreeNode& newOctreeNode, UMaterialInterface* material);
 
 	void processOctreeNode(const Cubiquity::OctreeNode& octreeNode);
 
