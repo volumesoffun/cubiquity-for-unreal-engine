@@ -201,7 +201,7 @@ bool UCubiquityMeshComponent::ClearMeshTriangles()
 FPrimitiveSceneProxy* UCubiquityMeshComponent::CreateSceneProxy()
 {
 	//UE_LOG(CubiquityLog, Log, TEXT("UCubiquityMeshComponent::CreateSceneProxy"));
-	FPrimitiveSceneProxy* Proxy = NULL;
+	FPrimitiveSceneProxy* Proxy = nullptr;
 
 	if (terrainVertices.Num() > 0 || coloredCubesVertices.Num() > 0)
 	{

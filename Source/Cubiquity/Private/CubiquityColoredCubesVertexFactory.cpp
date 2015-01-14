@@ -80,7 +80,7 @@ FColoredCubesVertexFactoryShaderParameters* FColoredCubesVertexFactory::Construc
 		return new FColoredCubesVertexFactoryShaderParameters();
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 bool FColoredCubesVertexFactory::ShouldCache(EShaderPlatform Platform, const class FMaterial* Material, const class FShaderType* ShaderType)
@@ -116,7 +116,7 @@ FColoredCubesSceneProxy::FColoredCubesSceneProxy(UCubiquityMeshComponent* Compon
 
 	// Grab material
 	Material = Component->GetMaterial(0);
-	if (Material == NULL)
+	if (Material == nullptr)
 	{
 		Material = UMaterial::GetDefaultMaterial(MD_Surface);
 	}
@@ -136,12 +136,12 @@ void FColoredCubesSceneProxy::DrawDynamicElements(FPrimitiveDrawInterface* PDI, 
 	const bool bWireframe = View->Family->EngineShowFlags.Wireframe;
 
 	FColoredMaterialRenderProxy WireframeMaterialInstance(
-		WITH_EDITOR ? GEngine->WireframeMaterial->GetRenderProxy(IsSelected()) : NULL,
+		WITH_EDITOR ? GEngine->WireframeMaterial->GetRenderProxy(IsSelected()) : nullptr,
 		//GEngine->WireframeMaterial->GetRenderProxy(IsSelected()),
 		FLinearColor(0, 0.5f, 1.f)
 		);
 
-	FMaterialRenderProxy* MaterialProxy = NULL;
+	FMaterialRenderProxy* MaterialProxy = nullptr;
 	if (bWireframe)
 	{
 		MaterialProxy = &WireframeMaterialInstance;
