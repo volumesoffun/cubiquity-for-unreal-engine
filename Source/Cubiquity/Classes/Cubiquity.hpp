@@ -28,6 +28,10 @@ namespace
 
 namespace Cubiquity
 {
+	/**
+	 * An ever-increasing integer used to check synchronisation times.
+	 * \return the current Cubiquity time
+	 */
 	inline uint32_t currentTime()
 	{
 		uint32_t result;
@@ -50,8 +54,8 @@ namespace Cubiquity
 
 	enum class VolumeType : uint8_t
 	{
-		ColoredCubes = CU_COLORED_CUBES,
-		Terrain = CU_TERRAIN,
+		ColoredCubes = CU_COLORED_CUBES, ///< Colored cubes volume
+		Terrain = CU_TERRAIN, ///< Smooth terrain volume
 	};
 
 	enum class WritePermissions : uint8_t
@@ -60,7 +64,7 @@ namespace Cubiquity
 		ReadWrite = CU_READWRITE,
 	};
 
-	//A generic 3-vector for various types
+	//A generic spatial 3-vector for various types
 	template<typename T>
 	struct Vector
 	{
@@ -69,7 +73,9 @@ namespace Cubiquity
 		T z;
 	};
 
-	//`Color` is both the type used to store inside the ColoredCubesVolume as well as the type stored on each generated vertex
+	/**
+	 * `Color` is both the type used to store inside the `ColoredCubesVolume` as well as the type stored on each generated vertex
+	 */
 	class Color
 	{
 	public:
@@ -77,13 +83,13 @@ namespace Cubiquity
 		Color(uint32_t color) : m_color(*(CuColor*)(&color)) {}  //Horrible horrible cast nonsense
 		Color(CuColor color) : m_color(color) {}
 
-		uint8_t red() const { return cuGetRed(m_color); }
+		uint8_t red() const { return cuGetRed(m_color); } ///< \return the red component of the colour
 
-		uint8_t green() const { return cuGetGreen(m_color); }
+		uint8_t green() const { return cuGetGreen(m_color); } ///< \return the green component of the colour
 
-		uint8_t blue() const { return cuGetBlue(m_color); }
+		uint8_t blue() const { return cuGetBlue(m_color); } ///< \return the blue component of the colour
 
-		uint8_t alpha() const { return cuGetAlpha(m_color); }
+		uint8_t alpha() const { return cuGetAlpha(m_color); } ///< \return the alpha component of the colour
 
 		std::tuple<uint8_t, uint8_t, uint8_t, uint8_t> allComponents() const
 		{
@@ -98,7 +104,9 @@ namespace Cubiquity
 		const CuColor m_color;
 	};
 
-	//`MaterialSet` is both the type used to store inside the TerrainVolume as well as the type stored on each generated vertex
+	/**
+	 * `MaterialSet` is both the type used to store inside the TerrainVolume as well as the type stored on each generated vertex
+	 */
 	class MaterialSet
 	{
 	public:
@@ -123,10 +131,10 @@ namespace Cubiquity
 
 		void setMaterial(uint8_t index, uint8_t value)
 		{
-			const uint64_t bitIndex = index * 8;
-			const uint64_t value64 = value;
-			uint64_t mask = (((uint64_t)1 << 8) - 1) << bitIndex;
-			m_materialSet.data = (m_materialSet.data & ~mask) | ((value64 << bitIndex) & mask);
+			const uint64_t bitIndex = index * 8; //Convert the index of the byte into the index of the first bit of the byte
+			const uint64_t value64 = value; //Let's be exlpicit with our converion here to ensure the shift is done correctly
+			uint64_t mask = (((uint64_t)1 << 8) - 1) << bitIndex; //Create a mask of '1's for the bits we want to set
+			m_materialSet.data = (m_materialSet.data & ~mask) | ((value64 << bitIndex) & mask); //Take from the new value in the place where the mask is '1'
 		}
 
 		CuMaterialSet materialSetStruct() const { return m_materialSet; }
@@ -135,10 +143,14 @@ namespace Cubiquity
 		CuMaterialSet m_materialSet;
 	};
 
+	/**
+	 * Contains the encoded information about the vertex
+	 */
 	class ColoredCubesVertex
 	{
 	public:
 		ColoredCubesVertex() = delete;
+
 		Vector<uint8_t> encodedPos() const { return{ m_vertex.encodedPosX, m_vertex.encodedPosY, m_vertex.encodedPosZ }; }
 
 		Vector<float> position() const { return{ m_vertex.encodedPosX - 0.5, m_vertex.encodedPosY - 0.5, m_vertex.encodedPosZ - 0.5 }; }
@@ -153,7 +165,13 @@ namespace Cubiquity
 	{
 	public:
 		TerrainVertex() = delete;
+		
+		/**
+		 * Internally the position is stored encoded as a uint16_t for each dimension.
+		 * \return a vector of the encoded position values
+		 */
 		Vector<uint16_t> encodedPos() const { return{ m_vertex.encodedPosX, m_vertex.encodedPosY, m_vertex.encodedPosZ }; }
+
 		uint16_t encodedNormal() const { return{ m_vertex.encodedNormal }; }
 
 		Vector<float> position() const { return{ (1.0 / 256.0) * m_vertex.encodedPosX, (1.0 / 256.0) * m_vertex.encodedPosY, (1.0 / 256.0) * m_vertex.encodedPosZ }; }
