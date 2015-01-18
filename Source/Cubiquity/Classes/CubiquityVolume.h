@@ -34,7 +34,7 @@ public:
 
 	virtual void Destroyed() override;
 
-	virtual void Tick(float DeltaSeconds) override;
+	void processOctree();
 
 #if WITH_EDITOR
 	virtual void PostEditChangeProperty(FPropertyChangedEvent & PropertyChangedEvent) override;

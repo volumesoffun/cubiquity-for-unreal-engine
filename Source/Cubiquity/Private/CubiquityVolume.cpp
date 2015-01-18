@@ -103,7 +103,7 @@ void ACubiquityVolume::Destroyed()
 	Super::Destroyed();
 }
 
-void ACubiquityVolume::Tick(float DeltaSeconds)
+void ACubiquityVolume::processOctree()
 {
 	const auto eyePosition = eyePositionInVolumeSpace();
 	volume()->update({ eyePosition.X, eyePosition.Y, eyePosition.Z }, lodThreshold);
@@ -112,8 +112,6 @@ void ACubiquityVolume::Tick(float DeltaSeconds)
 	{
 		octreeRootNodeActor->processOctreeNode(volume()->rootOctreeNode());
 	}
-
-	Super::Tick(DeltaSeconds);
 }
 
 #if WITH_EDITOR

@@ -4,6 +4,8 @@
 
 #include "CubiquityUpdateComponent.h"
 
+#include "CubiquityVolume.h"
+
 UCubiquityUpdateComponent::UCubiquityUpdateComponent(const FObjectInitializer& PCIP)
 	: Super(PCIP)
 {
@@ -18,6 +20,6 @@ void UCubiquityUpdateComponent::TickComponent(float DeltaTime, enum ELevelTick T
 
 	if (GetAttachmentRootActor())
 	{
-		GetAttachmentRootActor()->Tick(DeltaTime);
+		Cast<ACubiquityVolume>(GetAttachmentRootActor())->processOctree();
 	}
 };
