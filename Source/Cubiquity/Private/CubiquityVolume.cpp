@@ -58,6 +58,8 @@ void ACubiquityVolume::OnConstruction(const FTransform& transform)
 		createOctree();
 	}
 
+	updateMaterial();
+
 	Super::OnConstruction(transform);
 }
 
@@ -126,6 +128,20 @@ void ACubiquityVolume::PostEditChangeProperty(FPropertyChangedEvent & PropertyCh
 		//Should we save the old volume? Probably not without asking.
 		//Unload old volume
 		//Load new one
+
+		TArray<AActor*> children = Children; //Make a copy to avoid overruns
+		for (AActor* childActor : children) //Should only be 1 child of this Actor
+		{
+			if (childActor && !childActor->IsPendingKillPending())
+			{
+				GetWorld()->DestroyActor(childActor);
+			}
+
+		}
+
+		loadVolume();
+
+		createOctree();
 
 		updateMaterial(); //TODO needed?
 	}
