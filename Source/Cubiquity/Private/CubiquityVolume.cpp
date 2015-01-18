@@ -65,8 +65,6 @@ void ACubiquityVolume::PostInitializeComponents()
 {
 	UE_LOG(CubiquityLog, Log, TEXT("ACubiquityVolume::PostInitializeComponents"));
 
-	//generateMeshes();
-
 	Super::PostInitializeComponents();
 }
 

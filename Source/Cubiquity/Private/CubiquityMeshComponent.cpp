@@ -242,7 +242,7 @@ FBoxSphereBounds UCubiquityMeshComponent::CalcBounds(const FTransform & LocalToW
 }
 
 
-bool UCubiquityMeshComponent::GetPhysicsTriMeshData(struct FTriMeshCollisionData* CollisionData, bool InUseAllTriData) //HERE
+bool UCubiquityMeshComponent::GetPhysicsTriMeshData(struct FTriMeshCollisionData* CollisionData, bool InUseAllTriData)
 {
 	if (ContainsPhysicsTriMeshData(true))
 	{
@@ -286,7 +286,7 @@ bool UCubiquityMeshComponent::ContainsPhysicsTriMeshData(bool InUseAllTriData) c
 	return (terrainVertices.Num() > 0 || coloredCubesVertices.Num() > 0) && (indices.Num() > 0);
 }
 
-void UCubiquityMeshComponent::UpdateBodySetup() //HERE
+void UCubiquityMeshComponent::UpdateBodySetup()
 {
 	//UE_LOG(CubiquityLog, Log, TEXT("UCubiquityMeshComponent::UpdateBodySetup"));
 	if (!ModelBodySetup)
