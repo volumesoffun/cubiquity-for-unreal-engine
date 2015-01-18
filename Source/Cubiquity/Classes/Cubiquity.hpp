@@ -35,6 +35,19 @@ namespace Cubiquity
 		return result;
 	}
 
+	/**
+	* \return a tuple holding {major, minor, patch, build}
+	*/
+	inline std::tuple<uint32_t, uint32_t, uint32_t, uint32_t> versionNumber()
+	{
+		uint32_t majorVersion;
+		uint32_t minorVersion;
+		uint32_t patchVersion;
+		uint32_t buildVersion;
+		::validate(cuGetVersionNumber(&majorVersion, &minorVersion, &patchVersion, &buildVersion));
+		return std::make_tuple(majorVersion, minorVersion, patchVersion, buildVersion);
+	}
+
 	enum class VolumeType : uint8_t
 	{
 		ColoredCubes = CU_COLORED_CUBES,
