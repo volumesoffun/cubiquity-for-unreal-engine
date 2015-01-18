@@ -49,7 +49,7 @@ FGeneratedMeshSceneProxy::FGeneratedMeshSceneProxy(UCubiquityMeshComponent* Comp
 
 	// Grab material
 	Material = Component->GetMaterial(0);
-	if (Material == NULL)
+	if (Material == nullptr)
 	{
 		Material = UMaterial::GetDefaultMaterial(MD_Surface);
 	}
