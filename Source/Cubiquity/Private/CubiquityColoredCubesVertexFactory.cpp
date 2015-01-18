@@ -153,19 +153,21 @@ void FColoredCubesSceneProxy::DrawDynamicElements(FPrimitiveDrawInterface* PDI, 
 
 	// Draw the mesh.
 	FMeshBatch Mesh;
-	FMeshBatchElement& BatchElement = Mesh.Elements[0];
-	BatchElement.IndexBuffer = &IndexBuffer;
 	Mesh.bWireframe = bWireframe;
 	Mesh.VertexFactory = &VertexFactory;
 	Mesh.MaterialRenderProxy = MaterialProxy;
+	Mesh.ReverseCulling = IsLocalToWorldDeterminantNegative();
+	Mesh.Type = PT_TriangleList;
+	Mesh.DepthPriorityGroup = SDPG_World;
+
+	FMeshBatchElement& BatchElement = Mesh.Elements[0];
+	BatchElement.IndexBuffer = &IndexBuffer;
 	BatchElement.PrimitiveUniformBuffer = CreatePrimitiveUniformBufferImmediate(GetLocalToWorld(), GetBounds(), GetLocalBounds(), true, UseEditorDepthTest());
 	BatchElement.FirstIndex = 0;
 	BatchElement.NumPrimitives = IndexBuffer.Indices.Num() / 3;
 	BatchElement.MinVertexIndex = 0;
 	BatchElement.MaxVertexIndex = VertexBuffer.Vertices.Num() - 1;
-	Mesh.ReverseCulling = IsLocalToWorldDeterminantNegative();
-	Mesh.Type = PT_TriangleList;
-	Mesh.DepthPriorityGroup = SDPG_World;
+
 	PDI->DrawMesh(Mesh);
 }
 
