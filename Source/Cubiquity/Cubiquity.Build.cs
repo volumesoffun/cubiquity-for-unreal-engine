@@ -12,18 +12,18 @@ public class Cubiquity : ModuleRules
 
     private string ThirdPartyPath
     {
-        get { return Path.GetFullPath(Path.Combine(ModulePath, "G:/Cubiquity")); }
+        get { return Path.GetFullPath(Path.Combine(ModulePath, "C:/Program Files/Cubiquity")); } //Edit this line to match Cubiquity is installed
     }
 
     private string ThirdPartyLibraryPath
     {
         //Change "Release" to something else for different build types
-        get { return Path.Combine(ThirdPartyPath, "build", "bin", "Release"); }
+        get { return Path.Combine(ThirdPartyPath, "bin"); }
     }
 
     private string ThirdPartyIncludePath
     {
-        get { return Path.Combine(ThirdPartyPath, "Core"); }
+        get { return Path.Combine(ThirdPartyPath, "include"); }
     }
     
     public Cubiquity(TargetInfo Target)
@@ -44,6 +44,9 @@ public class Cubiquity : ModuleRules
             isLibrarySupported = true;
 
             string PlatformString = (Target.Platform == UnrealTargetPlatform.Win64) ? "Win64" : "Win32";
+
+            //string remotePath = @"http://www.volumesoffun.com/downloads/Cubiquity/Cubiquity-2015-06-14.zip";
+            //System.IO.Compression.ZipFile.ExtractToDirectory(remotePath, extractPath);
 
             //Copy the Cubiquity DLL into the binaries directory locally
             FileInfo file = new FileInfo(Path.Combine(ThirdPartyLibraryPath, "CubiquityC.dll"));
