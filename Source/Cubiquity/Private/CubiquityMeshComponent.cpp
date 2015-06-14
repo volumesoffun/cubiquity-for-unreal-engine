@@ -93,7 +93,7 @@ bool UCubiquityMeshComponent::SetGeneratedMeshTrianglesTerrain(const Cubiquity::
 		//Now calculate the tangent vectors
 		const FVector Edge01 = (vertex1.Position - vertex0.Position);
 		const FVector Edge02 = (vertex2.Position - vertex0.Position);
-		const FVector TangentX = Edge01.SafeNormal() * 256.0; //Tangent
+		const FVector TangentX = Edge01.GetSafeNormal() * 256.0; //Tangent
 		const FVector TangentZ = vertex0.TangentZ; //Normal
 		const FVector TangentY = (TangentX ^ TangentZ); //Binormal (bitangent) I assume?
 
@@ -292,7 +292,7 @@ void UCubiquityMeshComponent::UpdateBodySetup()
 	if (!ModelBodySetup)
 	{
 		SetSimulatePhysics(false);
-		ModelBodySetup = ConstructObject<UBodySetup>(UBodySetup::StaticClass(), this);
+		ModelBodySetup = NewObject<UBodySetup>(this);
 		ModelBodySetup->CollisionTraceFlag = CTF_UseComplexAsSimple;
 		ModelBodySetup->bMeshCollideAll = true;
 	}

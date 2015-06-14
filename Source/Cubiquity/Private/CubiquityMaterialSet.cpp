@@ -16,5 +16,5 @@ uint8 UCubiquityMaterialSet::getMaterial(uint8 index) const
 
 UCubiquityMaterialSet* UCubiquityMaterialSet::MakeCubiquityMaterialSet()
 {
-	return new UCubiquityMaterialSet();
+	return NewObject<UCubiquityMaterialSet>();
 }
