@@ -66,8 +66,15 @@ void ACubiquityOctreeNode::initialiseOctreeNode(const Cubiquity::OctreeNode& new
 	mesh->SetMaterial(0, material);
 }
 
-void ACubiquityOctreeNode::processOctreeNode(const Cubiquity::OctreeNode& octreeNode)
+int ACubiquityOctreeNode::processOctreeNode(const Cubiquity::OctreeNode& octreeNode, int availableNodeSyncs)
 {
+	int nodeSyncsPerformed = 0;
+
+	if (availableNodeSyncs <= 0)
+	{
+		return nodeSyncsPerformed;
+	}
+
 	if (octreeNode.nodeOrChildrenLastChanged() > nodeAndChildrenLastSynced)
 	{
 		if (octreeNode.propertiesLastChanged() > propertiesLastSynced)
@@ -94,6 +101,9 @@ void ACubiquityOctreeNode::processOctreeNode(const Cubiquity::OctreeNode& octree
 			}
 
 			meshLastSynced = Cubiquity::currentTime();
+
+			availableNodeSyncs--;
+			nodeSyncsPerformed++;
 		}
 
 		if (octreeNode.structureLastChanged() > structureLastSynced)
@@ -146,14 +156,17 @@ void ACubiquityOctreeNode::processOctreeNode(const Cubiquity::OctreeNode& octree
 					if (octreeNode.hasChildNode({ x, y, z }))
 					{
 						// Recursivly call the octree traversal
-						children[x][y][z]->processOctreeNode(octreeNode.childNode({ x, y, z }));
+						children[x][y][z]->processOctreeNode(octreeNode.childNode({ x, y, z }), availableNodeSyncs);
 					}
 				}
 			}
 		}
 
 		nodeAndChildrenLastSynced = Cubiquity::currentTime();
+		
 	}
+
+	return nodeSyncsPerformed;
 }
 
 ACubiquityVolume* ACubiquityOctreeNode::getVolume() const

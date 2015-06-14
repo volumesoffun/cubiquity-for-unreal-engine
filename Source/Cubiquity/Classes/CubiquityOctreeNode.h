@@ -28,7 +28,7 @@ public:
 
 	void initialiseOctreeNode(const Cubiquity::OctreeNode& newOctreeNode, UMaterialInterface* material);
 
-	void processOctreeNode(const Cubiquity::OctreeNode& octreeNode);
+	int processOctreeNode(const Cubiquity::OctreeNode& octreeNode, int availableNodeSyncs);
 
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
 	ACubiquityVolume* getVolume() const;

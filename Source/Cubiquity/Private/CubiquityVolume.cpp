@@ -110,7 +110,7 @@ void ACubiquityVolume::processOctree()
 
 	if (octreeRootNodeActor)
 	{
-		octreeRootNodeActor->processOctreeNode(volume()->rootOctreeNode());
+		octreeRootNodeActor->processOctreeNode(volume()->rootOctreeNode(), 1);
 	}
 }
 
@@ -164,7 +164,7 @@ void ACubiquityVolume::createOctree()
 		spawnParameters.Owner = this;
 		octreeRootNodeActor = GetWorld()->SpawnActor<ACubiquityOctreeNode>(childNodeVolumePosition, FRotator::ZeroRotator, spawnParameters);
 		octreeRootNodeActor->initialiseOctreeNode(rootOctreeNode, Material);
-		octreeRootNodeActor->processOctreeNode(rootOctreeNode);
+		//octreeRootNodeActor->processOctreeNode(rootOctreeNode, 1);
 	}
 }
 
