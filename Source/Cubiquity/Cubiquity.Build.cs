@@ -12,7 +12,7 @@ public class Cubiquity : ModuleRules
 
     private string ThirdPartyPath
     {
-        get { return Path.GetFullPath(Path.Combine(ModulePath, "C:/Program Files/Cubiquity")); } //Edit this line to match Cubiquity is installed
+        get { return Path.GetFullPath(Path.Combine(ModulePath, "C:/Program Files/Cubiquity-2015-06-14")); } //Edit this line to match where Cubiquity is installed
     }
 
     private string ThirdPartyLibraryPath
@@ -57,6 +57,10 @@ public class Cubiquity : ModuleRules
                 {
                     file.CopyTo(destFile.FullName, true);
                 }
+            }
+            else
+            {
+                file.CopyTo(destFile.FullName, true);
             }
 
             //Make sure we can link against the .lib file
