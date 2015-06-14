@@ -12,12 +12,11 @@ public class Cubiquity : ModuleRules
 
     private string ThirdPartyPath
     {
-        get { return Path.GetFullPath(Path.Combine(ModulePath, "C:/Program Files/Cubiquity-2015-06-14")); } //Edit this line to match where Cubiquity is installed
+        get { return Path.GetFullPath("C:/Program Files/Cubiquity-2015-06-14"); } //Edit this line to match where Cubiquity is installed
     }
 
     private string ThirdPartyLibraryPath
     {
-        //Change "Release" to something else for different build types
         get { return Path.Combine(ThirdPartyPath, "bin"); }
     }
 
@@ -50,7 +49,9 @@ public class Cubiquity : ModuleRules
 
             //Copy the Cubiquity DLL into the binaries directory locally
             FileInfo file = new FileInfo(Path.Combine(ThirdPartyLibraryPath, "CubiquityC.dll"));
-            FileInfo destFile = new FileInfo(Path.Combine(ModulePath, "..", "..", "Binaries", PlatformString, "CubiquityC.dll"));
+            DirectoryInfo destDir = new DirectoryInfo(Path.Combine(ModulePath, "..", "..", "Binaries", PlatformString));
+            destDir.Create();
+            FileInfo destFile = new FileInfo(Path.Combine(destDir.ToString(), "CubiquityC.dll"));
             if (destFile.Exists)
             {
                 if (file.LastWriteTime > destFile.LastWriteTime)
