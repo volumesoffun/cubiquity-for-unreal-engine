@@ -14,7 +14,6 @@ class UCubiquityMaterialSet : public UObject
 public:
 
 	UCubiquityMaterialSet() = default;
-	UCubiquityMaterialSet(const Cubiquity::MaterialSet& materialSet) : m_materialSet(materialSet) {}
 
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
 	void setMaterial(uint8 index, uint8 value);
@@ -28,5 +27,6 @@ public:
 	operator Cubiquity::MaterialSet() const { return m_materialSet; }
 
 private:
+	friend class ACubiquityTerrainVolume;
 	Cubiquity::MaterialSet m_materialSet;
 };

@@ -12,7 +12,7 @@ public class Cubiquity : ModuleRules
 
     private string ThirdPartyPath
     {
-        get { return Path.GetFullPath("C:/Program Files/Cubiquity-2015-06-14"); } //Edit this line to match where Cubiquity is installed
+        get { return Path.GetFullPath("f:/Documents/Unreal Projects/Cubiquity-UE4-Test/Cubiquity-Dependencies/Cubiquity-2015-06-14"); } //Edit this line to match where Cubiquity is installed
     }
 
     private string ThirdPartyLibraryPath
