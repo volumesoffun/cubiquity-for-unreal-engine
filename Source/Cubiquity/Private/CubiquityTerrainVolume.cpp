@@ -45,9 +45,8 @@ void ACubiquityTerrainVolume::sculptTerrain(FVector localPosition, float innerRa
     m_volume->sculpt({ localPosition.X, localPosition.Y, localPosition.Z }, innerRadius, outerRadius, opacity);
 }
 
-FVector ACubiquityTerrainVolume::pickSurface(FVector localStartPosition, FVector localDirection) const
+FVector ACubiquityTerrainVolume::pickSurface(FVector localStartPosition, FVector localDirection, bool& success) const
 {
-    bool success;
     auto hitLocation = m_volume->pickSurface({ localStartPosition.X, localStartPosition.Y, localStartPosition.Z }, { localDirection.X, localDirection.Y, localDirection.Z }, &success);
 
     if (!success)

@@ -12,17 +12,17 @@ public class Cubiquity : ModuleRules
 
     private string ThirdPartyPath
     {
-        get { return Path.GetFullPath(Path.Combine(ModulePath, "../../Dependencies/Cubiquity-2015-06-14")); } //Edit this line to match where Cubiquity is installed
+        get { return Path.GetFullPath(Path.Combine(ModulePath, "../../ThirdParty/CubiquityC")); } //Edit this line to match where Cubiquity is installed
     }
 
     private string ThirdPartyLibraryPath
     {
-        get { return Path.Combine(ThirdPartyPath, "bin"); }
+        get { return Path.Combine(ThirdPartyPath, "Lib"); }
     }
 
     private string ThirdPartyIncludePath
     {
-        get { return Path.Combine(ThirdPartyPath, "include"); }
+        get { return Path.Combine(ThirdPartyPath, "Src"); }
     }
     
     public Cubiquity(TargetInfo Target)
@@ -38,18 +38,30 @@ public class Cubiquity : ModuleRules
     {
         bool isLibrarySupported = false;
 
-        if((Target.Platform == UnrealTargetPlatform.Win64) || (Target.Platform == UnrealTargetPlatform.Win32))
+        if (Target.Platform == UnrealTargetPlatform.Win64)
         {
             isLibrarySupported = true;
 
-            string PlatformString = (Target.Platform == UnrealTargetPlatform.Win64) ? "Win64" : "Win32";
+            string ConfigurationDirString;
+            if (Target.Configuration == UnrealTargetConfiguration.Debug && BuildConfiguration.bDebugBuildsActuallyUseDebugCRT)
+            {
+                ConfigurationDirString = "Debug";
+            }
+            else if (Target.Configuration == UnrealTargetConfiguration.Shipping)
+            {
+                ConfigurationDirString = "Release";
+            }
+            else
+            {
+                ConfigurationDirString = "RelWithDebInfo";
+            }
 
             //string remotePath = @"http://www.volumesoffun.com/downloads/Cubiquity/Cubiquity-2015-06-14.zip";
             //System.IO.Compression.ZipFile.ExtractToDirectory(remotePath, extractPath);
 
             //Copy the Cubiquity DLL into the binaries directory locally
-            FileInfo file = new FileInfo(Path.Combine(ThirdPartyLibraryPath, "CubiquityC.dll"));
-            DirectoryInfo destDir = new DirectoryInfo(Path.Combine(ModulePath, "..", "..", "Binaries", PlatformString));
+            FileInfo file = new FileInfo(Path.Combine(ThirdPartyLibraryPath, ConfigurationDirString, "CubiquityC.dll"));
+            DirectoryInfo destDir = new DirectoryInfo(Path.Combine(ModulePath, "..", "..", "Binaries/Win64"));
             destDir.Create();
             FileInfo destFile = new FileInfo(Path.Combine(destDir.ToString(), "CubiquityC.dll"));
             if (destFile.Exists)
@@ -65,7 +77,8 @@ public class Cubiquity : ModuleRules
             }
 
             //Make sure we can link against the .lib file
-            PublicAdditionalLibraries.Add(Path.Combine(ThirdPartyLibraryPath, "CubiquityC.lib"));
+            PublicLibraryPaths.Add(Path.Combine(ThirdPartyLibraryPath, ConfigurationDirString));
+            PublicAdditionalLibraries.Add("CubiquityC.lib");
         }
 
         if(isLibrarySupported)
