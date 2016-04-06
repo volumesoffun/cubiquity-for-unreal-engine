@@ -11,7 +11,7 @@
 ACubiquityTerrainVolume::ACubiquityTerrainVolume(const FObjectInitializer& PCIP)
     : Super(PCIP)
 {
-    volumeFileName = FPaths::GameContentDir() + "example-vdb/SmoothVoxeliensTerrain.vdb";
+    volumeFileName = FPaths::ConvertRelativePathToFull(FPaths::GamePluginsDir() + "Cubiquity/Dependencies/example-vdb/SmoothVoxeliensTerrain.vdb");
 }
 
 void ACubiquityTerrainVolume::PostActorCreated()

@@ -10,7 +10,7 @@
 ACubiquityColoredCubesVolume::ACubiquityColoredCubesVolume(const FObjectInitializer& PCIP)
     : Super(PCIP)
 {
-    volumeFileName = FPaths::GameContentDir() + "example-vdb/VoxeliensTerrain.vdb";
+    volumeFileName = FPaths::ConvertRelativePathToFull(FPaths::GamePluginsDir() + "Cubiquity/Dependencies/example-vdb/VoxeliensTerrain.vdb");
 }
 
 void ACubiquityColoredCubesVolume::PostActorCreated()
