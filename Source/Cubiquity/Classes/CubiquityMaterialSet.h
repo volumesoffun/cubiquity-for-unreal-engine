@@ -12,8 +12,7 @@ class UCubiquityMaterialSet : public UObject
 	GENERATED_BODY()
 
 public:
-
-	UCubiquityMaterialSet() = default;
+	UCubiquityMaterialSet();
 
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")
 	void setMaterial(uint8 index, uint8 value);
