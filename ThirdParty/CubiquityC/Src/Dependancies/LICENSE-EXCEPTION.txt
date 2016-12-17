@@ -1,0 +1,1 @@
+This folder contains external dependencies which are not part of Cubiquity and which may be under a different license. In each case a LICENSE.txt file in included with the dependency. All licenses are compatible with the MIT license use by Cubiquity.

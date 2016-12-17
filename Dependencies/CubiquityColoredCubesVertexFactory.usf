@@ -1,0 +1,205 @@
+// Copyright 1998-2014 Epic Games, Inc. All Rights Reserved...
+
+/*=============================================================================
+	LocalVertexFactory.usf: Local vertex factory shader code.
+=============================================================================*/
+
+#include "VertexFactoryCommon.usf"
+#include "LocalVertexFactoryCommon.usf"
+
+float4x4 PreviousLocalToWorld;
+
+/* Defines what the vertex factory needs as input to the vertex shader. */
+struct FVertexFactoryInput
+{
+	float4	Position	: ATTRIBUTE0;
+	half4	Color		: ATTRIBUTE1;
+};
+
+struct FPositionOnlyVertexFactoryInput
+{
+	float4	Position	: ATTRIBUTE0;
+};
+
+/* Used to store cached intermediate data that will be used in multiple vertex factory functions. A common example is the TangentToLocal matrix, which had to be computed from unpacked vertex inputs. */
+struct FVertexFactoryIntermediates
+{
+	half3x3 TangentToLocal;
+	half3x3 TangentToWorld;
+	half TangentToWorldSign;
+
+	half4 Color;
+};
+
+half3x3 CalcTangentToLocal(FVertexFactoryInput Input)
+{
+	half3x3 Result;
+	/*half4 TangentZ = TangentBias(Input.TangentZ);
+
+	// pass-thru the tangent
+	half3 TangentX = TangentBias(Input.TangentX);
+	// pass-thru the normal
+
+	// derive the binormal by getting the cross product of the normal and tangent
+	half3 TangentY = cross(TangentZ.xyz, TangentX) * TangentZ.w;
+	// Recalculate TangentX off of the other two vectors
+	// This corrects quantization error since TangentX was passed in as a quantized vertex input
+	// The error shows up most in specular off of a mesh with a smoothed UV seam (normal is smooth, but tangents vary across the seam)
+	Result[0] = cross(TangentY, TangentZ.xyz) * TangentZ.w;
+	Result[1] = TangentY;
+	Result[2] = TangentZ.xyz;*/
+	
+	Result[0] = half3(0,0,1);
+	Result[1] = half3(0,0,1);
+	Result[2] = half3(0,0,1);
+
+	return Result;
+}
+
+half3x3 CalcTangentToWorldNoScale(in half3x3 TangentToLocal)
+{
+	half3x3 LocalToWorld = GetLocalToWorld3x3();
+	half3 InvScale = Primitive.InvNonUniformScale.xyz;
+	LocalToWorld[0] *= InvScale.x;
+	LocalToWorld[1] *= InvScale.y;
+	LocalToWorld[2] *= InvScale.z;
+	return mul(TangentToLocal, LocalToWorld); 
+}
+
+half3x3 CalcTangentToWorld(FVertexFactoryInput Input, half3x3 TangentToLocal)
+{
+	half3x3 TangentToWorld = CalcTangentToWorldNoScale(TangentToLocal);
+	return TangentToWorld;
+}
+
+// This is called first in the vertex shader (in Main in BasePassVertexShader.usf but also other passes) to convert the input format to the Intermediates format
+FVertexFactoryIntermediates GetVertexFactoryIntermediates(FVertexFactoryInput Input)
+{
+	FVertexFactoryIntermediates Intermediates;
+
+	Intermediates.TangentToLocal = CalcTangentToLocal(Input);
+	Intermediates.TangentToWorld = CalcTangentToWorld(Input,Intermediates.TangentToLocal);
+	Intermediates.TangentToWorldSign = Primitive.LocalToWorldDeterminantSign;
+
+	// Swizzle vertex color.
+	Intermediates.Color = Input.Color FCOLOR_COMPONENT_SWIZZLE;
+	return Intermediates;
+}
+
+float4 CalcWorldPosition(float4 Position)
+{
+	return TransformLocalToTranslatedWorld(Position.xyz);
+}
+
+// @return translated world position
+float4 VertexFactoryGetWorldPosition(FVertexFactoryInput Input, FVertexFactoryIntermediates Intermediates)
+{
+	return CalcWorldPosition(Input.Position);
+}
+
+/**
+* Get the 3x3 tangent basis vectors for this vertex factory
+* this vertex factory will calculate the binormal on-the-fly
+*
+* @param Input - vertex input stream structure
+* @return 3x3 matrix
+*/
+half3x3 VertexFactoryGetTangentToLocal( FVertexFactoryInput Input, FVertexFactoryIntermediates Intermediates )
+{
+	//return Intermediates.TangentToLocal;
+	return half3x3(0,0,1, 0,0,1, 0,0,1);
+}
+
+/** Converts from vertex factory specific input to a FMaterialVertexParameters, which is used by vertex shader material inputs. */
+FMaterialVertexParameters GetMaterialVertexParameters( FVertexFactoryInput Input, FVertexFactoryIntermediates Intermediates, float3 WorldPosition, half3x3 TangentToLocal )
+{
+	FMaterialVertexParameters Result = (FMaterialVertexParameters)0;
+	Result.WorldPosition = WorldPosition - View.PreViewTranslation;
+	Result.VertexColor = Intermediates.Color;
+
+	Result.TangentToWorld = Intermediates.TangentToWorld;
+
+	return Result;
+}
+
+float4 VertexFactoryGetRasterizedWorldPosition(FVertexFactoryInput Input, FVertexFactoryIntermediates Intermediates, float4 InWorldPosition)
+{
+	return InWorldPosition;
+}
+
+//Make this empty as we need not interpolate anything (except position which is handled automatically)
+//Hmm, we can't redefine it here
+/*struct FVertexFactoryInterpolantsVSToPS
+{
+};*/
+
+FVertexFactoryInterpolantsVSToPS VertexFactoryGetInterpolantsVSToPS(FVertexFactoryInput Input, FVertexFactoryIntermediates Intermediates, FMaterialVertexParameters VertexParameters)
+{
+	FVertexFactoryInterpolantsVSToPS Interpolants;
+	// Initialize the whole struct to 0
+	Interpolants = (FVertexFactoryInterpolantsVSToPS)0;
+	
+	SetColor(Interpolants, Intermediates.Color);
+	
+	SetTangents(Interpolants, Intermediates.TangentToWorld[0], Intermediates.TangentToWorld[2], Intermediates.TangentToWorldSign);
+	
+	return Interpolants;
+}
+
+float3 TransformWorldPositionToLocal(float3 InWorldPosition)
+{
+	return mul(float4(InWorldPosition, 1), Primitive.WorldToLocal).xyz;
+}
+
+/** Converts from vertex factory specific interpolants to a FMaterialPixelParameters, which is used by material inputs. */
+// This is called in the pixel shader and converts vertex factory specific interpolants (FVertexFactoryInterpolants) to the FMaterialPixelParameters structure which is used by the pass pixel shaders. 
+FMaterialPixelParameters GetMaterialPixelParameters(FVertexFactoryInterpolantsVSToPS Interpolants, float4 PixelPosition)
+{
+	// GetMaterialPixelParameters is responsible for fully initializing the result
+	FMaterialPixelParameters Result = MakeInitializedMaterialPixelParameters();
+	
+	float3 localPosition = TransformWorldPositionToLocal(PixelPosition.xyz); //Assuming PixelPosition is in world-space
+	
+	Result.AbsoluteWorldPosition = PixelPosition; //TODO Is this right?
+	
+	float3 volumeNormal = normalize(cross(ddx(PixelPosition.xyz), ddy(PixelPosition.xyz)));
+	
+	// This fixes inaccuracies/rounding errors which can otherwise occur
+	volumeNormal = floor(volumeNormal + float3(0.5, 0.5, 0.5));	
+	
+	Result.WorldNormal = TransformLocalToTranslatedWorld(volumeNormal);
+	
+	// Because we know our normal is pointing along one of the three main axes we can trivially compute a tangent space.
+	float3 volumeTangent = volumeNormal.yzx;
+	float3 volumeBinormal = volumeNormal.zxy;
+	
+	// And from our tangent space we can now compute texture coordinates.
+	float2 texCoords = float2(dot(PixelPosition.xyz, volumeTangent), dot(PixelPosition.xyz, volumeBinormal));
+	texCoords = texCoords - float2(0.5, 0.5);  // Required because integer positions are at the center of the voxel.
+
+#if NUM_MATERIAL_TEXCOORDS
+	Result.TexCoords[0] = texCoords;
+#endif
+	
+	//These are in volume space, should be in world space?
+	Result.TangentToWorld[ 0 ] = volumeTangent;
+	Result.TangentToWorld[ 1 ] = volumeBinormal;
+	Result.TangentToWorld[ 2 ] = volumeNormal;
+	
+	Result.VertexColor = GetColor(Interpolants);
+
+	Result.TwoSidedSign = 1;
+	return Result;
+}
+
+/** for depth-only pass */
+float4 VertexFactoryGetWorldPosition(FPositionOnlyVertexFactoryInput Input)
+{
+	return CalcWorldPosition(Input.Position);
+}
+
+// @return previous translated world position
+float4 VertexFactoryGetPreviousWorldPosition(FVertexFactoryInput Input, FVertexFactoryIntermediates Intermediates)
+{
+	return mul(Input.Position, PreviousLocalToWorld);
+}

@@ -180,7 +180,7 @@ void FColoredCubesSceneProxy::GetDynamicMeshElements(const TArray<const FSceneVi
 	}
 }
 
-FPrimitiveViewRelevance FColoredCubesSceneProxy::GetViewRelevance(const FSceneView* View)
+FPrimitiveViewRelevance FColoredCubesSceneProxy::GetViewRelevance(const FSceneView* View) const
 {
 	FPrimitiveViewRelevance Result;
 	Result.bDrawRelevance = IsShown(View);

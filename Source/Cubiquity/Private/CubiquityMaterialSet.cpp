@@ -4,6 +4,10 @@
 
 #include "CubiquityMaterialSet.h"
 
+UCubiquityMaterialSet::UCubiquityMaterialSet() : Super()
+{
+}
+
 void UCubiquityMaterialSet::setMaterial(uint8 index, uint8 value)
 {
 	m_materialSet.setMaterial(index, value);

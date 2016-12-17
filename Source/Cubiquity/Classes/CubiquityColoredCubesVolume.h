@@ -26,11 +26,11 @@ public:
 
 	//Along a raycast, get the position of the first non-empty voxel
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Cubiquity")
-	FVector pickFirstSolidVoxel(FVector localStartPosition, FVector localDirection) const;
+	void pickFirstSolidVoxel(const FVector& localStartPosition, const FVector& localDirection, bool& success, FVector& hitLocation) const;
 
 	//Along a raycast, get the position of the last empty voxel
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Cubiquity")
-	FVector pickLastEmptyVoxel(FVector localStartPosition, FVector localDirection) const;
+	void pickLastEmptyVoxel(const FVector& localStartPosition, const FVector& localDirection, bool& success, FVector& hitLocation) const;
 
 	//Set a voxel in the volume to a specific value
 	UFUNCTION(BlueprintCallable, Category = "Cubiquity")

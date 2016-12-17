@@ -1,0 +1,17 @@
+Binaries/Win64
+Intermediate
+*.exp
+*.ilk
+ThirdParty/CubiquityC/Src/CMakeFiles
+ThirdParty/CubiquityC/Src/_sqlite3.dir
+ThirdParty/CubiquityC/Src/CubiquityC.dir
+ThirdParty/CubiquityC/Src/Debug
+ThirdParty/CubiquityC/Src/Release
+ThirdParty/CubiquityC/Src/RelWithDebInfo
+ThirdParty/CubiquityC/Src/x64
+/ThirdParty/CubiquityC/Src/*.vcxproj
+/ThirdParty/CubiquityC/Src/*.filters
+/ThirdParty/CubiquityC/Src/*.user
+*.sdf
+*.opensdf
+*.sln
